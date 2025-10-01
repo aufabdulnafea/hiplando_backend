@@ -7,15 +7,21 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum HorseStatus {
+    pending
+    published
+    sold
+}
+
 model Horse {
     id String @id @default(uuid())
 
     userId String
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    // Relation to HorseType
-    typeId String
-    type   HorseType @relation(fields: [typeId], references: [id])
+    // Relation to HorseCategory
+    categoryId String
+    category   HorseCategory @relation(fields: [categoryId], references: [id])
 
     name     String
     pedigree String?
@@ -48,14 +54,19 @@ model Horse {
     vetReport   HorseVetReport?
     xrayResults HorseXrayResults?
 
-    status String @default("pending") // e.g., pending, published, sold
+    status HorseStatus @default(pending)
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt       DateTime             @default(now())
+    updatedAt       DateTime             @updatedAt
+    favoriteByUsers UserFavoriteHorses[]
+
+    @@index([status])
+    @@index([categoryId])
+    @@index([priceRangeId])
 }
 
 // need to be added in admin panel
-model HorseType {
+model HorseCategory {
     id        String   @id @default(uuid())
     name      String   @unique
     imageUrl  String
@@ -135,7 +146,6 @@ model User {
     verifiedSeller Boolean @default(false)
 
     userFavoriteHorses UserFavoriteHorses[]
-    userContacts       UserContact?
 
     notifications Notification[]
 
@@ -150,18 +160,16 @@ model User {
 }
 
 model UserFavoriteHorses {
-    id        String   @id @default(uuid())
-    userId    String   @unique()
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    createdAt DateTime @default(now())
-}
+    id      String @id @default(uuid())
+    userId  String
+    horseId String
 
-model UserContact {
-    id        String   @id @default(uuid())
-    userId    String   @unique()
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    message   String
+    user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    horse Horse @relation(fields: [horseId], references: [id], onDelete: Cascade)
+
     createdAt DateTime @default(now())
+
+    @@unique([userId, horseId]) // prevents duplicates
 }
 
 model UserReview {

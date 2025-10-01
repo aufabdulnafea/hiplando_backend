@@ -2,7 +2,7 @@
 CREATE TABLE "Horse" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
-    "typeId" TEXT NOT NULL,
+    "categoryId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "pedigree" TEXT,
     "age" INTEGER NOT NULL,
@@ -19,14 +19,14 @@ CREATE TABLE "Horse" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "Horse_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "Horse_typeId_fkey" FOREIGN KEY ("typeId") REFERENCES "HorseType" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Horse_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "HorseCategory" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Horse_sexId_fkey" FOREIGN KEY ("sexId") REFERENCES "HorseSex" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Horse_disciplineId_fkey" FOREIGN KEY ("disciplineId") REFERENCES "HorseDiscipline" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Horse_priceRangeId_fkey" FOREIGN KEY ("priceRangeId") REFERENCES "HorsePriceRange" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
-CREATE TABLE "HorseType" (
+CREATE TABLE "HorseCategory" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
@@ -109,17 +109,10 @@ CREATE TABLE "User" (
 CREATE TABLE "UserFavoriteHorses" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
+    "horseId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "UserFavoriteHorses_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- CreateTable
-CREATE TABLE "UserContact" (
-    "id" TEXT NOT NULL PRIMARY KEY,
-    "userId" TEXT NOT NULL,
-    "message" TEXT NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "UserContact_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "UserFavoriteHorses_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "UserFavoriteHorses_horseId_fkey" FOREIGN KEY ("horseId") REFERENCES "Horse" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -147,7 +140,16 @@ CREATE TABLE "Notification" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "HorseType_name_key" ON "HorseType"("name");
+CREATE INDEX "Horse_status_idx" ON "Horse"("status");
+
+-- CreateIndex
+CREATE INDEX "Horse_categoryId_idx" ON "Horse"("categoryId");
+
+-- CreateIndex
+CREATE INDEX "Horse_priceRangeId_idx" ON "Horse"("priceRangeId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "HorseCategory_name_key" ON "HorseCategory"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "HorseSex_name_key" ON "HorseSex"("name");
@@ -171,7 +173,4 @@ CREATE UNIQUE INDEX "User_firebaseUid_key" ON "User"("firebaseUid");
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "UserFavoriteHorses_userId_key" ON "UserFavoriteHorses"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "UserContact_userId_key" ON "UserContact"("userId");
+CREATE UNIQUE INDEX "UserFavoriteHorses_userId_horseId_key" ON "UserFavoriteHorses"("userId", "horseId");

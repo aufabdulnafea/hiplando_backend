@@ -1,0 +1,210 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model Horse {
+    id String @id @default(uuid())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    // Relation to HorseType
+    typeId String
+    type   HorseType @relation(fields: [typeId], references: [id])
+
+    name     String
+    pedigree String?
+    age      Int
+
+    // Relation to HorseSex
+    sexId String
+    sex   HorseSex @relation(fields: [sexId], references: [id])
+
+    height Int
+
+    // Relation to HorseDiscipline
+    disciplineId String
+    discipline   HorseDiscipline @relation(fields: [disciplineId], references: [id])
+
+    location String
+
+    // Relation to HorsePriceRange
+    priceRangeId String
+    priceRange   HorsePriceRange @relation(fields: [priceRangeId], references: [id])
+
+    description                 String
+    veterinaryDocumentAvailable Boolean @default(false)
+    xrayResultsAvailable        Boolean @default(false)
+
+    // Relation to HorseImages
+    images   HorseImage[]
+    videoUrl String?
+
+    vetReport   HorseVetReport?
+    xrayResults HorseXrayResults?
+
+    status String @default("pending") // e.g., pending, published, sold
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+// need to be added in admin panel
+model HorseType {
+    id        String   @id @default(uuid())
+    name      String   @unique
+    imageUrl  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    horses    Horse[]
+}
+
+// need to be added in admin panel
+model HorseSex {
+    id        String   @id @default(uuid())
+    name      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    horses    Horse[]
+}
+
+model HorseImage {
+    id        String   @id @default(uuid())
+    url       String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    horseId String
+    horse   Horse  @relation(fields: [horseId], references: [id], onDelete: Cascade)
+}
+
+// need to be added in admin panel
+model HorsePriceRange {
+    id        String   @id @default(uuid())
+    name      String   @unique
+    minPrice  Int
+    maxPrice  Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    horses    Horse[]
+}
+
+// need to be added in admin panel
+model HorseDiscipline {
+    id        String   @id @default(uuid())
+    name      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    horses    Horse[]
+}
+
+model HorseVetReport {
+    id        String   @id @default(uuid())
+    horseId   String   @unique
+    horse     Horse    @relation(fields: [horseId], references: [id], onDelete: Cascade)
+    reportUrl String
+    public    Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model HorseXrayResults {
+    id        String   @id @default(uuid())
+    horseId   String   @unique
+    horse     Horse    @relation(fields: [horseId], references: [id], onDelete: Cascade)
+    xrayUrl   String
+    public    Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+// -------------------------------------------------------------------------
+model User {
+    id          String @id @default(uuid())
+    firebaseUid String @unique
+
+    phoneNumber    String?
+    email          String? @unique
+    whatsAppNumber String?
+
+    verifiedSeller Boolean @default(false)
+
+    userFavoriteHorses UserFavoriteHorses[]
+    userContacts       UserContact?
+
+    notifications Notification[]
+
+    role String @default("user") // e.g., user, admin
+
+    horses Horse[]
+
+    reviews UserReview[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model UserFavoriteHorses {
+    id        String   @id @default(uuid())
+    userId    String   @unique()
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+}
+
+model UserContact {
+    id        String   @id @default(uuid())
+    userId    String   @unique()
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    message   String
+    createdAt DateTime @default(now())
+}
+
+model UserReview {
+    id        String   @id @default(uuid())
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    reviewer  String
+    rating    Int
+    comment   String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Notification {
+    id        String   @id @default(uuid())
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    title     String
+    message   String
+    read      Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+// --------------------------------------------------------------------------
+// model ServiceProvider {
+//     id        String                  @id @default(uuid())
+//     name      String
+//     email     String                  @unique
+//     phone     String?
+//     website   String?
+//     createdAt DateTime                @default(now())
+//     updatedAt DateTime                @updatedAt
+//     reviews   ServiceProviderReview[]
+// }
+
+// model ServiceProviderReview {
+//     id                String          @id @default(uuid())
+//     serviceProviderId String
+//     serviceProvider   ServiceProvider @relation(fields: [serviceProviderId], references: [id], onDelete: Cascade)
+//     reviewer          String
+//     rating            Int
+//     comment           String?
+//     createdAt         DateTime        @default(now())
+//     updatedAt         DateTime        @updatedAt
+// }

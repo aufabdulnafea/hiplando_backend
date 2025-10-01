@@ -1,0 +1,16 @@
+node_modules
+*.env
+.DS_Store
+dist
+coverage
+npm-debug.log
+yarn-error.log
+lerna-debug.log
+.idea
+.vscode
+*.swp
+*.swo
+*.sqlite
+*.db
+*.sqlite3
+serviceAccountKey.json

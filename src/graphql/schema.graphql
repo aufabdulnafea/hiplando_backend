@@ -1,0 +1,234 @@
+scalar DateTime
+
+# ============================
+# Enums
+# ============================
+enum HorseStatus {
+  pending
+  published
+  sold
+}
+
+# ============================
+# Types
+# ============================
+
+type Horse {
+  id: ID!
+  user: User!
+  category: HorseCategory!
+  name: String!
+  pedigree: String
+  age: Int!
+  sex: HorseSex!
+  height: Int!
+  discipline: HorseDiscipline!
+  location: String!
+  priceRange: HorsePriceRange!
+  description: String!
+  veterinaryDocumentAvailable: Boolean!
+  xrayResultsAvailable: Boolean!
+  images: [HorseImage!]!
+  videoUrl: String
+  vetReport: HorseVetReport
+  xrayResults: HorseXrayResults
+  status: HorseStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  favoriteByUsers: [UserFavoriteHorses!]!
+}
+
+type HorseCategory {
+  id: ID!
+  name: String!
+  imageUrl: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  horses: [Horse!]
+}
+
+type HorseSex {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  horses: [Horse!]
+}
+
+type HorseImage {
+  id: ID!
+  url: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  horse: Horse!
+}
+
+type HorsePriceRange {
+  id: ID!
+  name: String!
+  minPrice: Int!
+  maxPrice: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  horses: [Horse!]
+}
+
+type HorseDiscipline {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  horses: [Horse!]
+}
+
+type HorseVetReport {
+  id: ID!
+  horse: Horse!
+  reportUrl: String!
+  public: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type HorseXrayResults {
+  id: ID!
+  horse: Horse!
+  xrayUrl: String!
+  public: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type User {
+  id: ID!
+  firebaseUid: String!
+  phoneNumber: String
+  email: String
+  whatsAppNumber: String
+  verifiedSeller: Boolean!
+  userFavoriteHorses: [UserFavoriteHorses!]
+  notifications: [Notification!]
+  role: String!
+  horses: [Horse!]
+  reviews: [UserReview!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserFavoriteHorses {
+  id: ID!
+  user: User!
+  horse: Horse!
+  createdAt: DateTime!
+}
+
+type UserReview {
+  id: ID!
+  user: User!
+  reviewer: String!
+  rating: Int!
+  comment: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Notification {
+  id: ID!
+  user: User!
+  title: String!
+  message: String!
+  read: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ============================
+# Inputs
+# ============================
+
+input CreateHorseInput {
+  userId: ID!
+  categoryId: ID!
+  name: String!
+  pedigree: String
+  age: Int!
+  sexId: ID!
+  height: Int!
+  disciplineId: ID!
+  location: String!
+  priceRangeId: ID!
+  description: String!
+  veterinaryDocumentAvailable: Boolean
+  xrayResultsAvailable: Boolean
+  videoUrl: String
+}
+
+input UpdateHorseInput {
+  name: String
+  pedigree: String
+  age: Int
+  height: Int
+  location: String
+  description: String
+  status: HorseStatus
+  videoUrl: String
+  categoryId: ID
+  sexId: ID
+  disciplineId: ID
+  priceRangeId: ID
+  veterinaryDocumentAvailable: Boolean
+  xrayResultsAvailable: Boolean
+}
+
+input UpdateUserInput {
+  email: String
+  phoneNumber: String
+  whatsAppNumber: String
+  role: String
+  verifiedSeller: Boolean
+}
+
+input CreateUserInput {
+  email: String!
+  firebaseUid: String!
+}
+
+# ============================
+# Queries
+# ============================
+
+type Query {
+  horses(status: HorseStatus): [Horse!]!
+  horse(id: ID!): Horse
+
+  horseCategories: [HorseCategory!]!
+  horseSexes: [HorseSex!]!
+  horseDisciplines: [HorseDiscipline!]!
+  horsePriceRanges: [HorsePriceRange!]!
+
+  users: [User!]
+  user(id: ID!): User
+}
+
+# ============================
+# Mutations
+# ============================
+
+type Mutation {
+  createHorse(data: CreateHorseInput!): Horse!
+  updateHorse(id: ID!, data: UpdateHorseInput!): Horse!
+  deleteHorse(id: ID!): Horse!
+
+  updateUser(id: ID!, data: UpdateUserInput!): User!
+
+  createHorseCategory(name: String!, imageUrl: String!): HorseCategory!
+  createHorseSex(name: String!): HorseSex!
+  createHorseDiscipline(name: String!): HorseDiscipline!
+  createHorsePriceRange(
+    name: String!
+    minPrice: Int!
+    maxPrice: Int!
+  ): HorsePriceRange!
+
+  createUser(data: CreateUserInput!): User!
+}

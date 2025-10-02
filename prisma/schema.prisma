@@ -2,6 +2,7 @@ generator client {
     provider = "prisma-client-js"
 }
 
+
 datasource db {
     provider = "sqlite"
     url      = env("DATABASE_URL")
@@ -193,26 +194,3 @@ model Notification {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
-
-// --------------------------------------------------------------------------
-// model ServiceProvider {
-//     id        String                  @id @default(uuid())
-//     name      String
-//     email     String                  @unique
-//     phone     String?
-//     website   String?
-//     createdAt DateTime                @default(now())
-//     updatedAt DateTime                @updatedAt
-//     reviews   ServiceProviderReview[]
-// }
-
-// model ServiceProviderReview {
-//     id                String          @id @default(uuid())
-//     serviceProviderId String
-//     serviceProvider   ServiceProvider @relation(fields: [serviceProviderId], references: [id], onDelete: Cascade)
-//     reviewer          String
-//     rating            Int
-//     comment           String?
-//     createdAt         DateTime        @default(now())
-//     updatedAt         DateTime        @updatedAt
-// }

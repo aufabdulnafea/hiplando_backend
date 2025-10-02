@@ -1,14 +1,15 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-
 import routes from './routes/index.js'
 import { env } from './config/index.js'
+import { yoga } from './graphql/index.js'
 
 async function main() {
     const app = express();
     app.use(express.json())
     app.use(cookieParser())
 
+    app.use('/graphql', yoga)
     app.use(routes)
 
     const PORT = env.PORT;

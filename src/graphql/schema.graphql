@@ -146,6 +146,25 @@ type Notification {
 # Inputs
 # ============================
 
+input CreateHorseCategoryInput {
+  name: String!
+  imageUrl: String!
+}
+
+input CreateHorseSexInput {
+  name: String!
+}
+
+input CreateHorseDisciplineInput {
+  name: String!
+}
+
+input CreateHorsePriceRangeInput {
+  name: String!
+  minPrice: Int!
+  maxPrice: Int!
+}
+
 input CreateHorseInput {
   userId: ID!
   categoryId: ID!
@@ -221,14 +240,10 @@ type Mutation {
 
   updateUser(id: ID!, data: UpdateUserInput!): User!
 
-  createHorseCategory(name: String!, imageUrl: String!): HorseCategory!
-  createHorseSex(name: String!): HorseSex!
-  createHorseDiscipline(name: String!): HorseDiscipline!
-  createHorsePriceRange(
-    name: String!
-    minPrice: Int!
-    maxPrice: Int!
-  ): HorsePriceRange!
+  createHorseCategory(data: CreateHorseCategoryInput!): HorseCategory!
+  createHorseSex(data: CreateHorseSexInput!): HorseSex!
+  createHorseDiscipline(data: CreateHorseDisciplineInput!): HorseDiscipline!
+  createHorsePriceRange(data: CreateHorsePriceRangeInput!): HorsePriceRange!
 
   createUser(data: CreateUserInput!): User!
 }

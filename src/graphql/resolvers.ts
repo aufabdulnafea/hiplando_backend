@@ -109,6 +109,28 @@ export const resolvers = {
             return ctx.prisma.user.create({
                 data
             })
-        }
+        },
+        createHorseCategory: async (_: unknown, { data }: { data: Prisma.HorseCategoryCreateInput | Prisma.HorseCategoryUncheckedCreateInput }, ctx: Context) => {
+            return ctx.prisma.horseCategory.create({
+                data
+            })
+        },
+        createHorsePriceRange: async (_: unknown, { data }: { data: Prisma.HorsePriceRangeCreateInput | Prisma.HorsePriceRangeUncheckedCreateInput }, ctx: Context) => {
+            return ctx.prisma.horsePriceRange.create({
+                data
+            })
+        },
+        createHorseSex: async (_: unknown, { data }: { data: Prisma.HorseSexCreateInput | Prisma.HorseSexUncheckedCreateInput }, ctx: Context) => {
+            return ctx.prisma.horseSex.create({
+                data
+            })
+        },
+        createHorseDiscipline: async (_: unknown, { data }: { data: Prisma.HorseDisciplineCreateInput | Prisma.HorseDisciplineUncheckedCreateInput }, ctx: Context) => {
+            return ctx.prisma.horseDiscipline.create({
+                data
+            })
+        },
     },
 };
+
+

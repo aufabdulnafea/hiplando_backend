@@ -10,7 +10,7 @@ CREATE TABLE "Horse" (
     "height" INTEGER NOT NULL,
     "disciplineId" TEXT NOT NULL,
     "location" TEXT NOT NULL,
-    "priceRangeId" TEXT NOT NULL,
+    "price" REAL NOT NULL,
     "description" TEXT NOT NULL,
     "veterinaryDocumentAvailable" BOOLEAN NOT NULL DEFAULT false,
     "xrayResultsAvailable" BOOLEAN NOT NULL DEFAULT false,
@@ -21,8 +21,7 @@ CREATE TABLE "Horse" (
     CONSTRAINT "Horse_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "Horse_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "HorseCategory" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Horse_sexId_fkey" FOREIGN KEY ("sexId") REFERENCES "HorseSex" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Horse_disciplineId_fkey" FOREIGN KEY ("disciplineId") REFERENCES "HorseDiscipline" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Horse_priceRangeId_fkey" FOREIGN KEY ("priceRangeId") REFERENCES "HorsePriceRange" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Horse_disciplineId_fkey" FOREIGN KEY ("disciplineId") REFERENCES "HorseDiscipline" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -50,16 +49,6 @@ CREATE TABLE "HorseImage" (
     "updatedAt" DATETIME NOT NULL,
     "horseId" TEXT NOT NULL,
     CONSTRAINT "HorseImage_horseId_fkey" FOREIGN KEY ("horseId") REFERENCES "Horse" ("id") ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- CreateTable
-CREATE TABLE "HorsePriceRange" (
-    "id" TEXT NOT NULL PRIMARY KEY,
-    "name" TEXT NOT NULL,
-    "minPrice" INTEGER NOT NULL,
-    "maxPrice" INTEGER NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
 );
 
 -- CreateTable
@@ -146,16 +135,10 @@ CREATE INDEX "Horse_status_idx" ON "Horse"("status");
 CREATE INDEX "Horse_categoryId_idx" ON "Horse"("categoryId");
 
 -- CreateIndex
-CREATE INDEX "Horse_priceRangeId_idx" ON "Horse"("priceRangeId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "HorseCategory_name_key" ON "HorseCategory"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "HorseSex_name_key" ON "HorseSex"("name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "HorsePriceRange_name_key" ON "HorsePriceRange"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "HorseDiscipline_name_key" ON "HorseDiscipline"("name");

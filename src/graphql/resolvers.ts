@@ -14,8 +14,8 @@ type UpdateHorseInput = {
     videoUrl?: string;
     categoryId?: string;
     sexId?: string;
+    price?: number;
     disciplineId?: string;
-    priceRangeId?: string;
     veterinaryDocumentAvailable?: boolean;
     xrayResultsAvailable?: boolean;
 };
@@ -43,7 +43,6 @@ export const resolvers = {
                     category: true,
                     sex: true,
                     discipline: true,
-                    priceRange: true,
                     images: true,
                     vetReport: true,
                     xrayResults: true,
@@ -62,10 +61,6 @@ export const resolvers = {
 
         horseDisciplines: async (_: unknown, __: unknown, ctx: Context) => {
             return ctx.prisma.horseDiscipline.findMany()
-        },
-
-        horsePriceRanges: async (_: unknown, __: unknown, ctx: Context) => {
-            return ctx.prisma.horsePriceRange.findMany()
         },
 
         users: (_: unknown, __: unknown, ctx: Context) => ctx.prisma.user.findMany(),
@@ -112,11 +107,6 @@ export const resolvers = {
         },
         createHorseCategory: async (_: unknown, { data }: { data: Prisma.HorseCategoryCreateInput | Prisma.HorseCategoryUncheckedCreateInput }, ctx: Context) => {
             return ctx.prisma.horseCategory.create({
-                data
-            })
-        },
-        createHorsePriceRange: async (_: unknown, { data }: { data: Prisma.HorsePriceRangeCreateInput | Prisma.HorsePriceRangeUncheckedCreateInput }, ctx: Context) => {
-            return ctx.prisma.horsePriceRange.create({
                 data
             })
         },

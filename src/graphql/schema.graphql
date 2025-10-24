@@ -24,7 +24,7 @@ type Horse {
   height: Int!
   discipline: HorseDiscipline!
   location: String!
-  priceRange: HorsePriceRange!
+  price: Float!
   description: String!
   veterinaryDocumentAvailable: Boolean!
   xrayResultsAvailable: Boolean!
@@ -61,16 +61,6 @@ type HorseImage {
   createdAt: DateTime!
   updatedAt: DateTime!
   horse: Horse!
-}
-
-type HorsePriceRange {
-  id: ID!
-  name: String!
-  minPrice: Int!
-  maxPrice: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  horses: [Horse!]
 }
 
 type HorseDiscipline {
@@ -159,12 +149,6 @@ input CreateHorseDisciplineInput {
   name: String!
 }
 
-input CreateHorsePriceRangeInput {
-  name: String!
-  minPrice: Int!
-  maxPrice: Int!
-}
-
 input CreateHorseInput {
   userId: ID!
   categoryId: ID!
@@ -175,7 +159,7 @@ input CreateHorseInput {
   height: Int!
   disciplineId: ID!
   location: String!
-  priceRangeId: ID!
+  price: Float!
   description: String!
   veterinaryDocumentAvailable: Boolean
   xrayResultsAvailable: Boolean
@@ -194,7 +178,7 @@ input UpdateHorseInput {
   categoryId: ID
   sexId: ID
   disciplineId: ID
-  priceRangeId: ID
+  price: Float
   veterinaryDocumentAvailable: Boolean
   xrayResultsAvailable: Boolean
 }
@@ -223,7 +207,6 @@ type Query {
   horseCategories: [HorseCategory!]!
   horseSexes: [HorseSex!]!
   horseDisciplines: [HorseDiscipline!]!
-  horsePriceRanges: [HorsePriceRange!]!
 
   users: [User!]
   user(id: ID!): User
@@ -243,7 +226,6 @@ type Mutation {
   createHorseCategory(data: CreateHorseCategoryInput!): HorseCategory!
   createHorseSex(data: CreateHorseSexInput!): HorseSex!
   createHorseDiscipline(data: CreateHorseDisciplineInput!): HorseDiscipline!
-  createHorsePriceRange(data: CreateHorsePriceRangeInput!): HorsePriceRange!
 
   createUser(data: CreateUserInput!): User!
 }

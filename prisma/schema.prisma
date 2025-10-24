@@ -39,9 +39,7 @@ model Horse {
 
     location String
 
-    // Relation to HorsePriceRange
-    priceRangeId String
-    priceRange   HorsePriceRange @relation(fields: [priceRangeId], references: [id])
+    price Float
 
     description                 String
     veterinaryDocumentAvailable Boolean @default(false)
@@ -62,7 +60,6 @@ model Horse {
 
     @@index([status])
     @@index([categoryId])
-    @@index([priceRangeId])
 }
 
 // need to be added in admin panel
@@ -92,17 +89,6 @@ model HorseImage {
 
     horseId String
     horse   Horse  @relation(fields: [horseId], references: [id], onDelete: Cascade)
-}
-
-// need to be added in admin panel
-model HorsePriceRange {
-    id        String   @id @default(uuid())
-    name      String   @unique
-    minPrice  Int
-    maxPrice  Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    horses    Horse[]
 }
 
 // need to be added in admin panel

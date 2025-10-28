@@ -3,31 +3,6 @@ import { Prisma } from '@prisma/client'
 
 type HorseStatus = 'pending' | 'published' | 'sold';
 
-type UpdateHorseInput = {
-    name?: string;
-    pedigree?: string;
-    age?: number;
-    height?: number;
-    location?: string;
-    description?: string;
-    status?: HorseStatus;
-    videoUrl?: string;
-    categoryId?: string;
-    sexId?: string;
-    price?: number;
-    disciplineId?: string;
-    veterinaryDocumentAvailable?: boolean;
-    xrayResultsAvailable?: boolean;
-};
-
-type UpdateUserInput = {
-    email?: string;
-    phoneNumber?: string;
-    whatsAppNumber?: string;
-    role?: string;
-    verifiedSeller?: boolean;
-};
-
 export const resolvers = {
     Query: {
         horses: async (_: unknown, args: { status?: HorseStatus }, ctx: Context) => {
@@ -41,7 +16,7 @@ export const resolvers = {
                 where: { id: args.id },
                 include: {
                     category: true,
-                    sex: true,
+                    gender: true,
                     discipline: true,
                     images: true,
                     vetReport: true,
@@ -55,8 +30,8 @@ export const resolvers = {
             return ctx.prisma.horseCategory.findMany()
         },
 
-        horseSexes: async (_: unknown, __: unknown, ctx: Context) => {
-            return ctx.prisma.horseSex.findMany()
+        horseGenders: async (_: unknown, __: unknown, ctx: Context) => {
+            return ctx.prisma.horseGender.findMany()
         },
 
         horseDisciplines: async (_: unknown, __: unknown, ctx: Context) => {
@@ -64,62 +39,68 @@ export const resolvers = {
         },
 
         users: (_: unknown, __: unknown, ctx: Context) => ctx.prisma.user.findMany(),
-
-        user: (_: unknown, args: { id: string }, ctx: Context) =>
-            ctx.prisma.user.findUnique({ where: { id: args.id } }),
+        user: (_: unknown, args: { id: string }, ctx: Context) => {
+            return ctx.prisma.user.findUnique({ where: { id: args.id } })
+        }
     },
 
     Mutation: {
+        // --------- Horse ------------
         createHorse: async (_: unknown, { data }: { data: any }, ctx: Context) => {
             return ctx.prisma.horse.create({ data });
         },
 
-        updateHorse: async (
-            _: unknown,
-            { id, data }: { id: string; data: UpdateHorseInput },
-            ctx: Context
-        ) => {
+        updateHorse: async (_: unknown, { id, data }: { id: string; data: Prisma.HorseUpdateInput }, ctx: Context) => {
             return ctx.prisma.horse.update({
                 where: { id },
                 data,
             });
         },
-
         deleteHorse: async (_: unknown, { id }: { id: string }, ctx: Context) => {
             return ctx.prisma.horse.delete({ where: { id } });
         },
+        // ----------- User --------------
 
-        updateUser: async (
-            _: unknown,
-            { id, data }: { id: string; data: UpdateUserInput },
-            ctx: Context
-        ) => {
-
+        updateUser: async (_: unknown, { id, data }: { id: string; data: Prisma.UserUpdateInput }, ctx: Context) => {
             return ctx.prisma.user.update({
                 where: { id },
                 data,
             });
         },
         createUser: async (_: unknown, { data }: { data: Prisma.UserCreateInput | Prisma.UserUncheckedCreateInput }, ctx: Context) => {
-            return ctx.prisma.user.create({
-                data
-            })
+            return ctx.prisma.user.create({ data })
         },
+
+        // --------- Category -----------
         createHorseCategory: async (_: unknown, { data }: { data: Prisma.HorseCategoryCreateInput | Prisma.HorseCategoryUncheckedCreateInput }, ctx: Context) => {
-            return ctx.prisma.horseCategory.create({
-                data
-            })
+            return ctx.prisma.horseCategory.create({ data })
         },
-        createHorseSex: async (_: unknown, { data }: { data: Prisma.HorseSexCreateInput | Prisma.HorseSexUncheckedCreateInput }, ctx: Context) => {
-            return ctx.prisma.horseSex.create({
-                data
-            })
+        deleteHorseCategory: async (_: unknown, { id }: { id: string }, ctx: Context) => {
+            ctx.prisma.horseCategory.delete({ where: { id } });
         },
+        // updateHorseCatefory: async (_: unknown, { data, id }: { id: string, data: Prisma.HorseCategoryUpdateInput }, ctx: Context) => {
+        //     return ctx.prisma.horseCategory.update({ where: { id }, data })
+        // },
+
+        // --------- Gender -------------
+        createHorseGender: async (_: unknown, { data }: { data: Prisma.HorseGenderCreateInput | Prisma.HorseGenderUncheckedCreateInput }, ctx: Context) => {
+            return ctx.prisma.horseGender.create({ data });
+        },
+        deleteHorseGender: async (_: unknown, { id }: { id: string }, ctx: Context) => {
+            ctx.prisma.horseGender.delete({ where: { id } });
+        },
+        // updateHorseGender: async () => { },
+
+        // ---------- Discipline -----------
         createHorseDiscipline: async (_: unknown, { data }: { data: Prisma.HorseDisciplineCreateInput | Prisma.HorseDisciplineUncheckedCreateInput }, ctx: Context) => {
-            return ctx.prisma.horseDiscipline.create({
-                data
-            })
+            return ctx.prisma.horseDiscipline.create({ data });
         },
+        deleteHorseDiscipline: async (_: unknown, { id }: { id: string }, ctx: Context) => {
+            return ctx.prisma.horseDiscipline.delete({ where: { id } });
+        },
+        // updateHorseDiscipline: async (_: unknown, { id, data }: { id: string, data: Prisma.HorseDisciplineUpdateInput }, ctx: Context) => {
+        //     return ctx.prisma.horseDiscipline.update({ where: { id }, data })
+        // }
     },
 };
 

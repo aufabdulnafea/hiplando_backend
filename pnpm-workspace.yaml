@@ -6,3 +6,4 @@ onlyBuiltDependencies:
   - nexus-prisma
   - prisma
   - protobufjs
+  - yarn

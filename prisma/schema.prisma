@@ -1,5 +1,12 @@
 generator client {
     provider = "prisma-client-js"
+    output = "../src/lib/prisma"
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+  clientOutput = "./prisma"
+  output = "../src/lib/pothos-prisma-types.ts"
 }
 
 datasource db {
@@ -7,11 +14,11 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-enum HorseStatus {
-    pending
-    published
-    sold
-}
+// enum HorseStatus {
+//     pending
+//     published
+//     sold
+// }
 
 model Horse {
     id String @id @default(uuid())
@@ -27,9 +34,9 @@ model Horse {
     pedigree String?
     age      Int
 
-    // Relation to HorseSex
-    sexId String
-    sex   HorseSex @relation(fields: [sexId], references: [id])
+    // Relation to HorseGender
+    genderId String
+    gender   HorseGender @relation(fields: [genderId], references: [id])
 
     height Int
 
@@ -52,7 +59,7 @@ model Horse {
     vetReport   HorseVetReport?
     xrayResults HorseXrayResults?
 
-    status HorseStatus @default(pending)
+    status String @default("pending")
 
     createdAt       DateTime             @default(now())
     updatedAt       DateTime             @updatedAt
@@ -73,7 +80,7 @@ model HorseCategory {
 }
 
 // need to be added in admin panel
-model HorseSex {
+model HorseGender {
     id        String   @id @default(uuid())
     name      String   @unique
     createdAt DateTime @default(now())
@@ -123,6 +130,7 @@ model HorseXrayResults {
 // -------------------------------------------------------------------------
 model User {
     id          String @id @default(uuid())
+    name        String
     firebaseUid String @unique
 
     phoneNumber    String?

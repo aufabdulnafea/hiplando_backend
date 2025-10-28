@@ -20,7 +20,7 @@ type Horse {
   name: String!
   pedigree: String
   age: Int!
-  sex: HorseSex!
+  gender: HorseGender!
   height: Int!
   discipline: HorseDiscipline!
   location: String!
@@ -47,7 +47,7 @@ type HorseCategory {
   horses: [Horse!]
 }
 
-type HorseSex {
+type HorseGender {
   id: ID!
   name: String!
   createdAt: DateTime!
@@ -91,6 +91,7 @@ type HorseXrayResults {
 
 type User {
   id: ID!
+  name: String!
   firebaseUid: String!
   phoneNumber: String
   email: String
@@ -141,7 +142,7 @@ input CreateHorseCategoryInput {
   imageUrl: String!
 }
 
-input CreateHorseSexInput {
+input CreateHorseGenderInput {
   name: String!
 }
 
@@ -155,7 +156,7 @@ input CreateHorseInput {
   name: String!
   pedigree: String
   age: Int!
-  sexId: ID!
+  genderId: ID!
   height: Int!
   disciplineId: ID!
   location: String!
@@ -176,7 +177,7 @@ input UpdateHorseInput {
   status: HorseStatus
   videoUrl: String
   categoryId: ID
-  sexId: ID
+  genderId: ID
   disciplineId: ID
   price: Float
   veterinaryDocumentAvailable: Boolean
@@ -185,6 +186,7 @@ input UpdateHorseInput {
 
 input UpdateUserInput {
   email: String
+  name: String
   phoneNumber: String
   whatsAppNumber: String
   role: String
@@ -193,6 +195,7 @@ input UpdateUserInput {
 
 input CreateUserInput {
   email: String!
+  name: String!
   firebaseUid: String!
 }
 
@@ -205,7 +208,7 @@ type Query {
   horse(id: ID!): Horse
 
   horseCategories: [HorseCategory!]!
-  horseSexes: [HorseSex!]!
+  horseGenders: [HorseGender!]!
   horseDisciplines: [HorseDiscipline!]!
 
   users: [User!]
@@ -224,8 +227,14 @@ type Mutation {
   updateUser(id: ID!, data: UpdateUserInput!): User!
 
   createHorseCategory(data: CreateHorseCategoryInput!): HorseCategory!
-  createHorseSex(data: CreateHorseSexInput!): HorseSex!
+  deleteHorseCategory(id: ID!): HorseCategory!
+
+  createHorseGender(data: CreateHorseGenderInput!): HorseGender!
+  deleteHorseGender(id: ID!): HorseGender!
+
+
   createHorseDiscipline(data: CreateHorseDisciplineInput!): HorseDiscipline!
+  deleteHorseDiscipline(id: ID!): HorseDiscipline!
 
   createUser(data: CreateUserInput!): User!
 }

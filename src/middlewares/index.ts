@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express'
-import { admin } from '../firebase/index.js'
+import { admin } from '../firebase'
 
 export async function verifyFirebaseToken(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;

@@ -1,24 +1,18 @@
 generator client {
     provider = "prisma-client-js"
-    output = "../src/lib/prisma"
+    // output = "../src/lib/prisma"
 }
 
-generator pothos {
-  provider = "prisma-pothos-types"
-  clientOutput = "./prisma"
-  output = "../src/lib/pothos-prisma-types.ts"
-}
+// generator pothos {
+//   provider = "prisma-pothos-types"
+//   clientOutput = "./prisma"
+//   output = "../src/lib/pothos-prisma-types.ts"
+// }
 
 datasource db {
     provider = "sqlite"
     url      = env("DATABASE_URL")
 }
-
-// enum HorseStatus {
-//     pending
-//     published
-//     sold
-// }
 
 model Horse {
     id String @id @default(uuid())
@@ -48,9 +42,9 @@ model Horse {
 
     price Float
 
-    description                 String
-    veterinaryDocumentAvailable Boolean @default(false)
-    xrayResultsAvailable        Boolean @default(false)
+    description String
+    // veterinaryDocumentAvailable Boolean @default(false)
+    // xrayResultsAvailable        Boolean @default(false)
 
     // Relation to HorseImages
     images   HorseImage[]
@@ -111,7 +105,7 @@ model HorseVetReport {
     id        String   @id @default(uuid())
     horseId   String   @unique
     horse     Horse    @relation(fields: [horseId], references: [id], onDelete: Cascade)
-    reportUrl String
+    url       String
     public    Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -121,7 +115,7 @@ model HorseXrayResults {
     id        String   @id @default(uuid())
     horseId   String   @unique
     horse     Horse    @relation(fields: [horseId], references: [id], onDelete: Cascade)
-    xrayUrl   String
+    url       String
     public    Boolean  @default(false)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

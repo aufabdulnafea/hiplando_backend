@@ -13,4 +13,4 @@ lerna-debug.log
 *.sqlite
 *.db
 *.sqlite3
-serviceAccountKey.json
+*serviceAccountKey.json

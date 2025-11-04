@@ -1,15 +1,19 @@
 import { Generator } from '@paljs/generator';
 
-const generator = new Generator(
-  {
-    name: 'sdl', // 'nexus' | 'sdl' | 'graphql-modules'
-    schemaPath: './prisma/schema.prisma',
-  },
-  {
-    output: './src/graphql2/',
-    excludeFields: ['password'],
-    // ... other options
-  },
-);
+async function main() {
+  const generator = new Generator(
+    {
+      name: 'nexus',
+      schemaPath: './prisma/schema.prisma',
+    },
+    {
+      output: './src/graphql/',
+      excludeFields: ['password'],
+    },
+  );
 
-await generator.run();
+  await generator.run();
+  console.log('✅ GraphQL files generated');
+}
+
+main().catch(console.error);

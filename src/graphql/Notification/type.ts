@@ -8,7 +8,7 @@ export const Notification = objectType({
   name: 'Notification',
   definition(t) {
     t.string('id')
-    t.string('userId')
+    t.string('userUid')
     t.string('title')
     t.string('message')
     t.boolean('read')

@@ -1,13 +1,6 @@
 generator client {
     provider = "prisma-client-js"
-    // output = "../src/lib/prisma"
 }
-
-// generator pothos {
-//   provider = "prisma-pothos-types"
-//   clientOutput = "./prisma"
-//   output = "../src/lib/pothos-prisma-types.ts"
-// }
 
 datasource db {
     provider = "sqlite"
@@ -17,8 +10,8 @@ datasource db {
 model Horse {
     id String @id @default(uuid())
 
-    userId String
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userUid String
+    user    User   @relation(fields: [userUid], references: [uid], onDelete: Cascade)
 
     // Relation to HorseCategory
     categoryId String
@@ -46,8 +39,8 @@ model Horse {
     // veterinaryDocumentAvailable Boolean @default(false)
     // xrayResultsAvailable        Boolean @default(false)
 
-    // Relation to HorseImages
-    images   HorseImage[]
+    // Relation to HorsePhoto
+    photos   HorsePhoto[]
     videoUrl String?
 
     vetReport   HorseVetReport?
@@ -82,7 +75,7 @@ model HorseGender {
     horses    Horse[]
 }
 
-model HorseImage {
+model HorsePhoto {
     id        String   @id @default(uuid())
     url       String
     createdAt DateTime @default(now())
@@ -123,9 +116,9 @@ model HorseXrayResults {
 
 // -------------------------------------------------------------------------
 model User {
-    id          String @id @default(uuid())
-    name        String
-    firebaseUid String @unique
+    uid  String @id
+    name String
+    // firebaseUid String @unique
 
     phoneNumber    String?
     email          String? @unique
@@ -149,21 +142,21 @@ model User {
 
 model UserFavoriteHorses {
     id      String @id @default(uuid())
-    userId  String
+    userUid String
     horseId String
 
-    user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user  User  @relation(fields: [userUid], references: [uid], onDelete: Cascade)
     horse Horse @relation(fields: [horseId], references: [id], onDelete: Cascade)
 
     createdAt DateTime @default(now())
 
-    @@unique([userId, horseId]) // prevents duplicates
+    @@unique([userUid, horseId]) // prevents duplicates
 }
 
 model UserReview {
     id        String   @id @default(uuid())
-    userId    String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userUid   String
+    user      User     @relation(fields: [userUid], references: [uid], onDelete: Cascade)
     reviewer  String
     rating    Int
     comment   String?
@@ -173,8 +166,8 @@ model UserReview {
 
 model Notification {
     id        String   @id @default(uuid())
-    userId    String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userUid   String
+    user      User     @relation(fields: [userUid], references: [uid], onDelete: Cascade)
     title     String
     message   String
     read      Boolean  @default(false)

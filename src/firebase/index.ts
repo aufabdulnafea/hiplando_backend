@@ -1,10 +1,11 @@
 import admin from 'firebase-admin';
-import serviceAccount from '../config/serviceAccountKey.json';
-// import serviceAccount from '../config/';
+import { env } from '../config'
 
 if (!admin.apps.length) {
+  const serviceAccount = env.FIREBASE_SERVICE_ACCOUNT_BASE64;
+
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+    credential: admin.credential.cert(serviceAccount),
   });
 }
 

@@ -8,7 +8,7 @@ export const Horse = objectType({
   name: 'Horse',
   definition(t) {
     t.string('id')
-    t.string('userId')
+    t.string('userUid')
     t.string('categoryId')
     t.string('name')
     t.nullable.string('pedigree')
@@ -19,8 +19,6 @@ export const Horse = objectType({
     t.string('location')
     t.float('price')
     t.string('description')
-    t.boolean('veterinaryDocumentAvailable')
-    t.boolean('xrayResultsAvailable')
     t.nullable.string('videoUrl')
     t.string('status')
     t.field('createdAt', { type: 'DateTime' })
@@ -49,18 +47,18 @@ export const Horse = objectType({
         return root.discipline
       },
     })
-    t.list.field('images', {
-      type: 'HorseImage',
+    t.list.field('photos', {
+      type: 'HorsePhoto',
       args: {
-        where: 'HorseImageWhereInput',
-        orderBy: list('HorseImageOrderByWithRelationInput'),
-        cursor: 'HorseImageWhereUniqueInput',
+        where: 'HorsePhotoWhereInput',
+        orderBy: list('HorsePhotoOrderByWithRelationInput'),
+        cursor: 'HorsePhotoWhereUniqueInput',
         take: 'Int',
         skip: 'Int',
-        distinct: list('HorseImageScalarFieldEnum'),
+        distinct: list('HorsePhotoScalarFieldEnum'),
       },
       resolve(root: any) {
-        return root.images
+        return root.photos
       },
     })
     t.nullable.field('vetReport', {

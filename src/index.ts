@@ -1,20 +1,22 @@
 import express from 'express';
+import cors from 'cors'
 import cookieParser from 'cookie-parser';
 
 import routes from './routes'
 import { env } from './config'
-// import { yoga } from './graphql'
 import { yoga } from './graphql-server'
-// import { schema } from './graphql-server'
 
 
 async function main() {
     const app = express();
+
+    app.use(cors({
+        origin: "http://localhost:3000", // your frontend URL
+        credentials: true,
+    }));
+
     app.use(express.json())
     app.use(cookieParser())
-
-
-    // console.log(schema)
 
     app.use('/graphql', yoga)
     app.use(routes)

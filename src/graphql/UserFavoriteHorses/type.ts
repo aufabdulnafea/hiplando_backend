@@ -8,7 +8,7 @@ export const UserFavoriteHorses = objectType({
   name: 'UserFavoriteHorses',
   definition(t) {
     t.string('id')
-    t.string('userId')
+    t.string('userUid')
     t.string('horseId')
     t.field('createdAt', { type: 'DateTime' })
     t.field('user', {

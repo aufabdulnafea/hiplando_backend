@@ -1,15 +1,15 @@
 import { mutationField, nonNull } from 'nexus'
 
-export const HorseImageDeleteManyMutation = mutationField(
-  'deleteManyHorseImage',
+export const HorsePhotoDeleteManyMutation = mutationField(
+  'deleteManyHorsePhoto',
   {
     type: nonNull('BatchPayload'),
     args: {
-      where: 'HorseImageWhereInput',
+      where: 'HorsePhotoWhereInput',
       limit: 'Int',
     },
     resolve: async (_parent, { where }, { prisma }) => {
-      return prisma.horseImage.deleteMany({ where } as any)
+      return prisma.horsePhoto.deleteMany({ where } as any)
     },
   },
 )

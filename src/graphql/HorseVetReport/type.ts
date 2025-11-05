@@ -9,7 +9,7 @@ export const HorseVetReport = objectType({
   definition(t) {
     t.string('id')
     t.string('horseId')
-    t.string('reportUrl')
+    t.string('url')
     t.boolean('public')
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })

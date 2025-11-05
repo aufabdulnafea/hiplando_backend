@@ -7,9 +7,8 @@ export const User = objectType({
   },
   name: 'User',
   definition(t) {
-    t.string('id')
+    t.string('uid')
     t.string('name')
-    t.string('firebaseUid')
     t.nullable.string('phoneNumber')
     t.nullable.string('email')
     t.nullable.string('whatsAppNumber')

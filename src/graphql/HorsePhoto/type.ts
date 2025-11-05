@@ -1,11 +1,11 @@
 import { objectType } from 'nexus'
 
-export const HorseImage = objectType({
+export const HorsePhoto = objectType({
   nonNullDefaults: {
     output: true,
     input: false,
   },
-  name: 'HorseImage',
+  name: 'HorsePhoto',
   definition(t) {
     t.string('id')
     t.string('url')

@@ -8,7 +8,7 @@ export const UserReview = objectType({
   name: 'UserReview',
   definition(t) {
     t.string('id')
-    t.string('userId')
+    t.string('userUid')
     t.string('reviewer')
     t.int('rating')
     t.nullable.string('comment')

@@ -8,8 +8,8 @@ async function main() {
     },
     {
       output: './src/graphql/',
-      excludeFields: ['password'],
-    },
+      excludeFields: ['password']
+    }
   );
 
   await generator.run();

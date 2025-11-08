@@ -1,3 +1,4 @@
+import { GraphQLError } from 'graphql'
 import { mutationField, nonNull } from 'nexus'
 
 export const HorseCreateOneMutation = mutationField('createOneHorse', {
@@ -5,7 +6,9 @@ export const HorseCreateOneMutation = mutationField('createOneHorse', {
   args: {
     data: nonNull('HorseCreateInput'),
   },
-  resolve(_parent, { data }, { prisma, select }) {
+  resolve(_parent, { data }, { prisma, select, user }) {
+    console.log(user)
+    if (!user) throw new GraphQLError("Not good", { extensions: { code: "UNAUTHORIZED" } })
     return prisma.horse.create({
       data,
       ...select,

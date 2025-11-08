@@ -2,7 +2,6 @@ import { admin } from '../firebase'
 import type { Request, Response, NextFunction } from 'express'
 
 export async function authenticateFirebase(req: Request, res: Response, next: NextFunction) {
-    console.log('here')
     const authHeader = req.headers.authorization
     if (!authHeader) return res.status(401).send("No token provided")
 

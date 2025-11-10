@@ -1,0 +1,9 @@
+model HorseXrayResults {
+    id        String   @id @default(uuid())
+    horseId   String   @unique
+    horse     Horse    @relation(fields: [horseId], references: [id], onDelete: Cascade)
+    url       String
+    public    Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

@@ -1,0 +1,8 @@
+model HorseCategory {
+    id        String   @id @default(uuid())
+    name      String   @unique
+    imageUrl  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    horses    Horse[]
+}

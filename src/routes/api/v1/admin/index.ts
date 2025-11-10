@@ -1,8 +1,9 @@
+
 import { Router } from 'express'
-import { register } from '../../../controllers/users'
+import horsesRouter from './horses'
 
 const router: Router = Router()
 
-router.post('/register', register)
+router.use('/horses', horsesRouter)
 
 export default router

@@ -1,0 +1,23 @@
+model User {
+    uid  String @id
+    name String
+
+    phoneNumber    String?
+    email          String? @unique
+    whatsAppNumber String?
+
+    verifiedSeller Boolean @default(false)
+
+    userFavoriteHorses UserFavoriteHorses[]
+
+    notifications Notification[]
+
+    role String @default("user") // e.g., user, admin
+
+    horses Horse[]
+
+    reviews UserReview[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

@@ -4,39 +4,6 @@ import { MulterRequest } from './upload'
 import { z } from 'zod'
 import { prisma } from '../context'
 
-// model Horse {
-//     id String @id @default(uuid())
-//     userId String
-//     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-//     categoryId String
-//     category   HorseCategory @relation(fields: [categoryId], references: [id])
-//     name     String
-//     pedigree String?
-//     age      Int
-//     genderId String
-//     gender   HorseGender @relation(fields: [genderId], references: [id])
-//     height Int
-//     disciplineId String
-//     discipline   HorseDiscipline @relation(fields: [disciplineId], references: [id])
-//     location String
-//     price Float
-//     description String
-//     photos   HorsePhoto[]
-//     videoUrl String?
-//     vetReport   HorseVetReport?
-//     xrayResults HorseXrayResults?
-//     status String @default("pending")
-//     createdAt       DateTime             @default(now())
-//     updatedAt       DateTime             @updatedAt
-//     favoriteByUsers UserFavoriteHorses[]
-//     @@index([status])
-//     @@index([categoryId])
-// }
-
-
-
-
-
 export const horseBodySchema = z.object({
     categoryId: z.uuidv4(),
     name: z.string().min(3).max(40),
@@ -115,22 +82,44 @@ export async function createHorse(req: Request, res: Response, next: NextFunctio
 
         // save files to the database
 
-        await prisma.horse.create({
+        const horse = await prisma.horse.create({
             data: {
                 userUid: req.user?.uid as string,
                 ...horseData,
             }
         })
 
+        for (const photo of fileData.photos) {
+            await prisma.horsePhoto.create({
+                data: {
+                    horseId: horse.id,
+                    url: `http://localhost:4000/${photo.filename}`
+                }
+            })
+        }
+
+        if (fileData.vetReport) {
+            await prisma.horseVetReport.create({
+                data: {
+                    horseId: horse.id,
+                    url: `http://localhost:4000/${fileData.vetReport.filename}`
+                }
+            })
+        }
+
+        if (fileData.xrayResults) {
+            await prisma.horseXrayResults.create({
+                data: {
+                    horseId: horse.id,
+                    url: `http://localhost:4000/${fileData.vetReport.filename}`
+                }
+            })
+        }
+
+        console.log("finished !!!!!!!!!!!!!!!!")
 
         // TODO: save to DB, upload to cloud storage, etc.
-        return res.status(201).json({
-            message: "Horse listing successfully created!",
-            data: {
-                ...horseData,
-                files: fileData,
-            },
-        });
+        return res.status(201).json(horse);
     } catch (err) {
         next(err);
     }

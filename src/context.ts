@@ -1,18 +1,17 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, type User } from '@prisma/client';
 import { getUserFromToken } from './firebase'
+// import { DecodedIdToken } from 'firebase-admin/auth';
 
 export const prisma = new PrismaClient();
 
 export type Context = {
     prisma: PrismaClient;
-    user: any
+    user: User | null
 };
 
 export async function createContext({ req }: any): Promise<Context> {
-    console.log(req.headers.authorization)
     const authHeader = req.headers.authorization || ''
     const token = authHeader.replace("Bearer ", "")
     const user = await getUserFromToken(token)
-    console.log("user", user)
     return { prisma, user };
 }

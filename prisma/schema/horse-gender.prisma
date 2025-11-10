@@ -1,0 +1,7 @@
+model HorseGender {
+    id        String   @id @default(uuid())
+    name      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    horses    Horse[]
+}

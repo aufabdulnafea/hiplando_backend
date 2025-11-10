@@ -1,0 +1,12 @@
+model UserFavoriteHorses {
+    id      String @id @default(uuid())
+    userUid String
+    horseId String
+
+    user  User  @relation(fields: [userUid], references: [uid], onDelete: Cascade)
+    horse Horse @relation(fields: [horseId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+
+    @@unique([userUid, horseId]) // prevents duplicates
+}

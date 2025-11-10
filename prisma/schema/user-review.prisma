@@ -1,0 +1,10 @@
+model UserReview {
+    id        String   @id @default(uuid())
+    userUid   String
+    user      User     @relation(fields: [userUid], references: [uid], onDelete: Cascade)
+    reviewer  String
+    rating    Int
+    comment   String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

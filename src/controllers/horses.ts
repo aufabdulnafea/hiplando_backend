@@ -6,16 +6,16 @@ import { prisma } from '../context'
 
 export const horseBodySchema = z.object({
     categoryId: z.uuidv4(),
-    name: z.string().min(3).max(40),
-    pedigree: z.url().optional(),
-    age: z.number().int().positive(),
+    name: z.string().min(3, "Name must be at least 3 characters").max(40, "Name too long"),
+    pedigree: z.url("Invalid video URL").optional().or(z.literal("")),
+    age: z.number().int("Age must be an integer").positive("Age must be positive"),
     genderId: z.uuidv4(),
-    height: z.number().positive(),
+    height: z.number().positive("Height must be positive"),
     disciplineId: z.uuidv4(),
-    location: z.string().min(2).max(60),
-    price: z.number().positive(),
-    description: z.string().min(10).max(2000),
-    videoUrl: z.url().optional(),
+    location: z.string().min(2, "Location too short").max(60, "Location too long"),
+    price: z.number().positive("Price must be positive"),
+    description: z.string().max(2000, "Description too long").optional().or(z.literal("")),
+    videoUrl: z.url("Invalid video URL").optional().or(z.literal("")),
 });
 
 // ✅ validates uploaded files via Multer
@@ -86,38 +86,38 @@ export async function createHorse(req: Request, res: Response, next: NextFunctio
             data: {
                 userUid: req.user?.uid as string,
                 ...horseData,
+                photos: fileData.photos.map(el => `http://192.168.0.217:4000/${el.filename}`),
+                vetReport: fileData.vetReport ? `http://192.168.0.217/${fileData.vetReport.filename}` : null,
+                xrayResults: fileData.xrayResults ? `http://192.168.0.217/${fileData.xrayResults.filename}` : null
             }
         })
 
-        for (const photo of fileData.photos) {
-            await prisma.horsePhoto.create({
-                data: {
-                    horseId: horse.id,
-                    url: `http://localhost:4000/${photo.filename}`
-                }
-            })
-        }
+        // for (const photo of fileData.photos) {
+        //     await prisma.horsePhoto.create({
+        //         data: {
+        //             horseId: horse.id,
+        //             url: `http://localhost:4000/${photo.filename}`
+        //         }
+        //     })
+        // }
 
-        if (fileData.vetReport) {
-            await prisma.horseVetReport.create({
-                data: {
-                    horseId: horse.id,
-                    url: `http://localhost:4000/${fileData.vetReport.filename}`
-                }
-            })
-        }
+        // if (fileData.vetReport) {
+        //     await prisma.horseVetReport.create({
+        //         data: {
+        //             horseId: horse.id,
+        //             url: `http://localhost:4000/${fileData.vetReport.filename}`
+        //         }
+        //     })
+        // }
 
-        if (fileData.xrayResults) {
-            await prisma.horseXrayResults.create({
-                data: {
-                    horseId: horse.id,
-                    url: `http://localhost:4000/${fileData.vetReport.filename}`
-                }
-            })
-        }
-
-        console.log("finished !!!!!!!!!!!!!!!!")
-
+        // if (fileData.xrayResults) {
+        //     await prisma.horseXrayResults.create({
+        //         data: {
+        //             horseId: horse.id,
+        //             url: `http://localhost:4000/${fileData.vetReport.filename}`
+        //         }
+        //     })
+        // }
         // TODO: save to DB, upload to cloud storage, etc.
         return res.status(201).json(horse);
     } catch (err) {

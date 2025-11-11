@@ -1,10 +1,19 @@
+// npx neonctl@latest init
+// psql 'postgresql://neondb_owner:npg_b5FQGr3UwHTE@ep-shiny-moon-ahoomtj8-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+
+enum HorseStatus {
+    SUBMITTED // submitted by user
+    APPROVED // approved by admin
+    ACCEPTED // admin edits approved
+    SOLD // the horse is sold
+}
+
 model Horse {
     id String @id @default(uuid())
 
     userUid String
     user    User   @relation(fields: [userUid], references: [uid], onDelete: Cascade)
 
-    // Relation to HorseCategory
     categoryId String
     category   HorseCategory @relation(fields: [categoryId], references: [id])
 
@@ -12,13 +21,11 @@ model Horse {
     pedigree String?
     age      Int
 
-    // Relation to HorseGender
     genderId String
     gender   HorseGender @relation(fields: [genderId], references: [id])
 
     height Int
 
-    // Relation to HorseDiscipline
     disciplineId String
     discipline   HorseDiscipline @relation(fields: [disciplineId], references: [id])
 
@@ -27,17 +34,14 @@ model Horse {
     price Float
 
     description String
-    // veterinaryDocumentAvailable Boolean @default(false)
-    // xrayResultsAvailable        Boolean @default(false)
 
-    // Relation to HorsePhoto
-    photos   HorsePhoto[]
+    photos   String[]
     videoUrl String?
 
-    vetReport   HorseVetReport?
-    xrayResults HorseXrayResults?
+    vetReport   String?
+    xrayResults String?
 
-    status String @default("pending")
+    status HorseStatus @default(SUBMITTED)
 
     createdAt       DateTime             @default(now())
     updatedAt       DateTime             @updatedAt

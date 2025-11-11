@@ -1,9 +1,0 @@
-model HorsePhoto {
-    id        String   @id @default(uuid())
-    url       String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    horseId String
-    horse   Horse  @relation(fields: [horseId], references: [id], onDelete: Cascade)
-}

@@ -1,3 +1,8 @@
+enum UserRole {
+    USER
+    ADMIN
+}
+
 model User {
     uid  String @id
     name String
@@ -12,7 +17,7 @@ model User {
 
     notifications Notification[]
 
-    role String @default("user") // e.g., user, admin
+    role UserRole @default(USER)
 
     horses Horse[]
 

@@ -19,7 +19,7 @@ export async function register(req: Request, res: Response, _: NextFunction) {
                 name: full_name,
                 email,
                 phoneNumber: phone_number,
-                role: numberOfUsers === 0 ? 'admin' : 'user'
+                role: numberOfUsers === 0 ? "ADMIN" : 'USER'
             }
         })
     }

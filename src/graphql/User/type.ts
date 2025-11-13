@@ -13,7 +13,7 @@ export const User = objectType({
     t.nullable.string('email')
     t.nullable.string('whatsAppNumber')
     t.boolean('verifiedSeller')
-    t.string('role')
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.list.field('userFavoriteHorses', {

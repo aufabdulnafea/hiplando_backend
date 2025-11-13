@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { processImages, upload } from '../../../controllers/upload'
-import { createHorse } from '../../../controllers/horses'
+import { createHorse, getHorseCategories, getHorseDisciplines, getHorseGenders } from '../../../controllers/horses'
 
 const router: Router = Router()
 
@@ -16,8 +16,5 @@ router.post('/create',
 
 router.post('/add-favorite', () => { })
 router.post('/remove-favorite', () => { })
-
-
-
 
 export default router

@@ -9,7 +9,7 @@ const schema = makeSchema({
     plugins: [
         paljs({
             includeAdmin: true,
-            adminSchemaPath: '../prisma/schema.prisma',
+            adminSchemaPath: '../prisma/schema/schema.prisma',
             prismaSelectOptions: {
                 defaultFields: { User: { id: true, email: true } },
                 excludeFields: { User: ['password'] },

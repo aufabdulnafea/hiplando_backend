@@ -44,7 +44,7 @@ export async function requireAdmin(req: Request, res: Response, next: NextFuncti
         return res.status(401).send("Not authenticated")
     }
 
-    if (localUser.role !== "admin") {
+    if (localUser.role !== "ADMIN") {
         return res.status(403).send("Forbidden: Admins only");
     }
 

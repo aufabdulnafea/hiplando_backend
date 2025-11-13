@@ -2,7 +2,12 @@ import { enumType, inputObjectType, objectType } from 'nexus'
 
 export const TransactionIsolationLevel = enumType({
   name: 'TransactionIsolationLevel',
-  members: ['Serializable'],
+  members: [
+    'ReadUncommitted',
+    'ReadCommitted',
+    'RepeatableRead',
+    'Serializable',
+  ],
 })
 
 export const HorseCategoryScalarFieldEnum = enumType({
@@ -20,21 +25,6 @@ export const HorseGenderScalarFieldEnum = enumType({
   members: ['id', 'name', 'createdAt', 'updatedAt'],
 })
 
-export const HorsePhotoScalarFieldEnum = enumType({
-  name: 'HorsePhotoScalarFieldEnum',
-  members: ['id', 'url', 'createdAt', 'updatedAt', 'horseId'],
-})
-
-export const HorseVetReportScalarFieldEnum = enumType({
-  name: 'HorseVetReportScalarFieldEnum',
-  members: ['id', 'horseId', 'url', 'public', 'createdAt', 'updatedAt'],
-})
-
-export const HorseXrayResultsScalarFieldEnum = enumType({
-  name: 'HorseXrayResultsScalarFieldEnum',
-  members: ['id', 'horseId', 'url', 'public', 'createdAt', 'updatedAt'],
-})
-
 export const HorseScalarFieldEnum = enumType({
   name: 'HorseScalarFieldEnum',
   members: [
@@ -50,7 +40,10 @@ export const HorseScalarFieldEnum = enumType({
     'location',
     'price',
     'description',
+    'photos',
     'videoUrl',
+    'vetReport',
+    'xrayResults',
     'status',
     'createdAt',
     'updatedAt',
@@ -108,9 +101,24 @@ export const SortOrder = enumType({
   members: ['asc', 'desc'],
 })
 
+export const QueryMode = enumType({
+  name: 'QueryMode',
+  members: ['default', 'insensitive'],
+})
+
 export const NullsOrder = enumType({
   name: 'NullsOrder',
   members: ['first', 'last'],
+})
+
+export const HorseStatus = enumType({
+  name: 'HorseStatus',
+  members: ['SUBMITTED', 'APPROVED', 'ACCEPTED', 'SOLD'],
+})
+
+export const UserRole = enumType({
+  name: 'UserRole',
+  members: ['USER', 'ADMIN'],
 })
 
 export const HorseCategoryWhereInput = inputObjectType({
@@ -364,281 +372,6 @@ export const HorseGenderScalarWhereWithAggregatesInput = inputObjectType({
   },
 })
 
-export const HorsePhotoWhereInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoWhereInput',
-  definition(t) {
-    t.list.field('AND', { type: 'HorsePhotoWhereInput' })
-    t.list.field('OR', { type: 'HorsePhotoWhereInput' })
-    t.list.field('NOT', { type: 'HorsePhotoWhereInput' })
-    t.field('id', { type: 'StringFilter' })
-    t.field('url', { type: 'StringFilter' })
-    t.field('createdAt', { type: 'DateTimeFilter' })
-    t.field('updatedAt', { type: 'DateTimeFilter' })
-    t.field('horseId', { type: 'StringFilter' })
-    t.field('horse', { type: 'HorseScalarRelationFilter' })
-  },
-})
-
-export const HorsePhotoOrderByWithRelationInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoOrderByWithRelationInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('horse', { type: 'HorseOrderByWithRelationInput' })
-  },
-})
-
-export const HorsePhotoWhereUniqueInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoWhereUniqueInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.list.field('AND', { type: 'HorsePhotoWhereInput' })
-    t.list.field('OR', { type: 'HorsePhotoWhereInput' })
-    t.list.field('NOT', { type: 'HorsePhotoWhereInput' })
-    t.field('url', { type: 'StringFilter' })
-    t.field('createdAt', { type: 'DateTimeFilter' })
-    t.field('updatedAt', { type: 'DateTimeFilter' })
-    t.field('horseId', { type: 'StringFilter' })
-    t.field('horse', { type: 'HorseScalarRelationFilter' })
-  },
-})
-
-export const HorsePhotoOrderByWithAggregationInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoOrderByWithAggregationInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('_count', { type: 'HorsePhotoCountOrderByAggregateInput' })
-    t.field('_max', { type: 'HorsePhotoMaxOrderByAggregateInput' })
-    t.field('_min', { type: 'HorsePhotoMinOrderByAggregateInput' })
-  },
-})
-
-export const HorsePhotoScalarWhereWithAggregatesInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoScalarWhereWithAggregatesInput',
-  definition(t) {
-    t.list.field('AND', { type: 'HorsePhotoScalarWhereWithAggregatesInput' })
-    t.list.field('OR', { type: 'HorsePhotoScalarWhereWithAggregatesInput' })
-    t.list.field('NOT', { type: 'HorsePhotoScalarWhereWithAggregatesInput' })
-    t.field('id', { type: 'StringWithAggregatesFilter' })
-    t.field('url', { type: 'StringWithAggregatesFilter' })
-    t.field('createdAt', { type: 'DateTimeWithAggregatesFilter' })
-    t.field('updatedAt', { type: 'DateTimeWithAggregatesFilter' })
-    t.field('horseId', { type: 'StringWithAggregatesFilter' })
-  },
-})
-
-export const HorseVetReportWhereInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportWhereInput',
-  definition(t) {
-    t.list.field('AND', { type: 'HorseVetReportWhereInput' })
-    t.list.field('OR', { type: 'HorseVetReportWhereInput' })
-    t.list.field('NOT', { type: 'HorseVetReportWhereInput' })
-    t.field('id', { type: 'StringFilter' })
-    t.field('horseId', { type: 'StringFilter' })
-    t.field('url', { type: 'StringFilter' })
-    t.field('public', { type: 'BoolFilter' })
-    t.field('createdAt', { type: 'DateTimeFilter' })
-    t.field('updatedAt', { type: 'DateTimeFilter' })
-    t.field('horse', { type: 'HorseScalarRelationFilter' })
-  },
-})
-
-export const HorseVetReportOrderByWithRelationInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportOrderByWithRelationInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('public', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-    t.field('horse', { type: 'HorseOrderByWithRelationInput' })
-  },
-})
-
-export const HorseVetReportWhereUniqueInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportWhereUniqueInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.field('horseId', { type: 'String' })
-    t.list.field('AND', { type: 'HorseVetReportWhereInput' })
-    t.list.field('OR', { type: 'HorseVetReportWhereInput' })
-    t.list.field('NOT', { type: 'HorseVetReportWhereInput' })
-    t.field('url', { type: 'StringFilter' })
-    t.field('public', { type: 'BoolFilter' })
-    t.field('createdAt', { type: 'DateTimeFilter' })
-    t.field('updatedAt', { type: 'DateTimeFilter' })
-    t.field('horse', { type: 'HorseScalarRelationFilter' })
-  },
-})
-
-export const HorseVetReportOrderByWithAggregationInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportOrderByWithAggregationInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('public', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-    t.field('_count', { type: 'HorseVetReportCountOrderByAggregateInput' })
-    t.field('_max', { type: 'HorseVetReportMaxOrderByAggregateInput' })
-    t.field('_min', { type: 'HorseVetReportMinOrderByAggregateInput' })
-  },
-})
-
-export const HorseVetReportScalarWhereWithAggregatesInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportScalarWhereWithAggregatesInput',
-  definition(t) {
-    t.list.field('AND', {
-      type: 'HorseVetReportScalarWhereWithAggregatesInput',
-    })
-    t.list.field('OR', { type: 'HorseVetReportScalarWhereWithAggregatesInput' })
-    t.list.field('NOT', {
-      type: 'HorseVetReportScalarWhereWithAggregatesInput',
-    })
-    t.field('id', { type: 'StringWithAggregatesFilter' })
-    t.field('horseId', { type: 'StringWithAggregatesFilter' })
-    t.field('url', { type: 'StringWithAggregatesFilter' })
-    t.field('public', { type: 'BoolWithAggregatesFilter' })
-    t.field('createdAt', { type: 'DateTimeWithAggregatesFilter' })
-    t.field('updatedAt', { type: 'DateTimeWithAggregatesFilter' })
-  },
-})
-
-export const HorseXrayResultsWhereInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsWhereInput',
-  definition(t) {
-    t.list.field('AND', { type: 'HorseXrayResultsWhereInput' })
-    t.list.field('OR', { type: 'HorseXrayResultsWhereInput' })
-    t.list.field('NOT', { type: 'HorseXrayResultsWhereInput' })
-    t.field('id', { type: 'StringFilter' })
-    t.field('horseId', { type: 'StringFilter' })
-    t.field('url', { type: 'StringFilter' })
-    t.field('public', { type: 'BoolFilter' })
-    t.field('createdAt', { type: 'DateTimeFilter' })
-    t.field('updatedAt', { type: 'DateTimeFilter' })
-    t.field('horse', { type: 'HorseScalarRelationFilter' })
-  },
-})
-
-export const HorseXrayResultsOrderByWithRelationInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsOrderByWithRelationInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('public', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-    t.field('horse', { type: 'HorseOrderByWithRelationInput' })
-  },
-})
-
-export const HorseXrayResultsWhereUniqueInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsWhereUniqueInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.field('horseId', { type: 'String' })
-    t.list.field('AND', { type: 'HorseXrayResultsWhereInput' })
-    t.list.field('OR', { type: 'HorseXrayResultsWhereInput' })
-    t.list.field('NOT', { type: 'HorseXrayResultsWhereInput' })
-    t.field('url', { type: 'StringFilter' })
-    t.field('public', { type: 'BoolFilter' })
-    t.field('createdAt', { type: 'DateTimeFilter' })
-    t.field('updatedAt', { type: 'DateTimeFilter' })
-    t.field('horse', { type: 'HorseScalarRelationFilter' })
-  },
-})
-
-export const HorseXrayResultsOrderByWithAggregationInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsOrderByWithAggregationInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('public', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-    t.field('_count', { type: 'HorseXrayResultsCountOrderByAggregateInput' })
-    t.field('_max', { type: 'HorseXrayResultsMaxOrderByAggregateInput' })
-    t.field('_min', { type: 'HorseXrayResultsMinOrderByAggregateInput' })
-  },
-})
-
-export const HorseXrayResultsScalarWhereWithAggregatesInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsScalarWhereWithAggregatesInput',
-  definition(t) {
-    t.list.field('AND', {
-      type: 'HorseXrayResultsScalarWhereWithAggregatesInput',
-    })
-    t.list.field('OR', {
-      type: 'HorseXrayResultsScalarWhereWithAggregatesInput',
-    })
-    t.list.field('NOT', {
-      type: 'HorseXrayResultsScalarWhereWithAggregatesInput',
-    })
-    t.field('id', { type: 'StringWithAggregatesFilter' })
-    t.field('horseId', { type: 'StringWithAggregatesFilter' })
-    t.field('url', { type: 'StringWithAggregatesFilter' })
-    t.field('public', { type: 'BoolWithAggregatesFilter' })
-    t.field('createdAt', { type: 'DateTimeWithAggregatesFilter' })
-    t.field('updatedAt', { type: 'DateTimeWithAggregatesFilter' })
-  },
-})
-
 export const HorseWhereInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -660,19 +393,17 @@ export const HorseWhereInput = inputObjectType({
     t.field('location', { type: 'StringFilter' })
     t.field('price', { type: 'FloatFilter' })
     t.field('description', { type: 'StringFilter' })
+    t.field('photos', { type: 'StringNullableListFilter' })
     t.field('videoUrl', { type: 'StringNullableFilter' })
-    t.field('status', { type: 'StringFilter' })
+    t.field('vetReport', { type: 'StringNullableFilter' })
+    t.field('xrayResults', { type: 'StringNullableFilter' })
+    t.field('status', { type: 'EnumHorseStatusFilter' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('updatedAt', { type: 'DateTimeFilter' })
     t.field('user', { type: 'UserScalarRelationFilter' })
     t.field('category', { type: 'HorseCategoryScalarRelationFilter' })
     t.field('gender', { type: 'HorseGenderScalarRelationFilter' })
     t.field('discipline', { type: 'HorseDisciplineScalarRelationFilter' })
-    t.field('photos', { type: 'HorsePhotoListRelationFilter' })
-    t.field('vetReport', { type: 'HorseVetReportNullableScalarRelationFilter' })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsNullableScalarRelationFilter',
-    })
     t.field('favoriteByUsers', { type: 'UserFavoriteHorsesListRelationFilter' })
   },
 })
@@ -695,7 +426,10 @@ export const HorseOrderByWithRelationInput = inputObjectType({
     t.field('location', { type: 'SortOrder' })
     t.field('price', { type: 'SortOrder' })
     t.field('description', { type: 'SortOrder' })
+    t.field('photos', { type: 'SortOrder' })
     t.field('videoUrl', { type: 'SortOrderInput' })
+    t.field('vetReport', { type: 'SortOrderInput' })
+    t.field('xrayResults', { type: 'SortOrderInput' })
     t.field('status', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('updatedAt', { type: 'SortOrder' })
@@ -703,9 +437,6 @@ export const HorseOrderByWithRelationInput = inputObjectType({
     t.field('category', { type: 'HorseCategoryOrderByWithRelationInput' })
     t.field('gender', { type: 'HorseGenderOrderByWithRelationInput' })
     t.field('discipline', { type: 'HorseDisciplineOrderByWithRelationInput' })
-    t.field('photos', { type: 'HorsePhotoOrderByRelationAggregateInput' })
-    t.field('vetReport', { type: 'HorseVetReportOrderByWithRelationInput' })
-    t.field('xrayResults', { type: 'HorseXrayResultsOrderByWithRelationInput' })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesOrderByRelationAggregateInput',
     })
@@ -733,19 +464,17 @@ export const HorseWhereUniqueInput = inputObjectType({
     t.field('location', { type: 'StringFilter' })
     t.field('price', { type: 'FloatFilter' })
     t.field('description', { type: 'StringFilter' })
+    t.field('photos', { type: 'StringNullableListFilter' })
     t.field('videoUrl', { type: 'StringNullableFilter' })
-    t.field('status', { type: 'StringFilter' })
+    t.field('vetReport', { type: 'StringNullableFilter' })
+    t.field('xrayResults', { type: 'StringNullableFilter' })
+    t.field('status', { type: 'EnumHorseStatusFilter' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('updatedAt', { type: 'DateTimeFilter' })
     t.field('user', { type: 'UserScalarRelationFilter' })
     t.field('category', { type: 'HorseCategoryScalarRelationFilter' })
     t.field('gender', { type: 'HorseGenderScalarRelationFilter' })
     t.field('discipline', { type: 'HorseDisciplineScalarRelationFilter' })
-    t.field('photos', { type: 'HorsePhotoListRelationFilter' })
-    t.field('vetReport', { type: 'HorseVetReportNullableScalarRelationFilter' })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsNullableScalarRelationFilter',
-    })
     t.field('favoriteByUsers', { type: 'UserFavoriteHorsesListRelationFilter' })
   },
 })
@@ -768,7 +497,10 @@ export const HorseOrderByWithAggregationInput = inputObjectType({
     t.field('location', { type: 'SortOrder' })
     t.field('price', { type: 'SortOrder' })
     t.field('description', { type: 'SortOrder' })
+    t.field('photos', { type: 'SortOrder' })
     t.field('videoUrl', { type: 'SortOrderInput' })
+    t.field('vetReport', { type: 'SortOrderInput' })
+    t.field('xrayResults', { type: 'SortOrderInput' })
     t.field('status', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('updatedAt', { type: 'SortOrder' })
@@ -801,8 +533,11 @@ export const HorseScalarWhereWithAggregatesInput = inputObjectType({
     t.field('location', { type: 'StringWithAggregatesFilter' })
     t.field('price', { type: 'FloatWithAggregatesFilter' })
     t.field('description', { type: 'StringWithAggregatesFilter' })
+    t.field('photos', { type: 'StringNullableListFilter' })
     t.field('videoUrl', { type: 'StringNullableWithAggregatesFilter' })
-    t.field('status', { type: 'StringWithAggregatesFilter' })
+    t.field('vetReport', { type: 'StringNullableWithAggregatesFilter' })
+    t.field('xrayResults', { type: 'StringNullableWithAggregatesFilter' })
+    t.field('status', { type: 'EnumHorseStatusWithAggregatesFilter' })
     t.field('createdAt', { type: 'DateTimeWithAggregatesFilter' })
     t.field('updatedAt', { type: 'DateTimeWithAggregatesFilter' })
   },
@@ -1109,7 +844,7 @@ export const UserWhereInput = inputObjectType({
     t.field('email', { type: 'StringNullableFilter' })
     t.field('whatsAppNumber', { type: 'StringNullableFilter' })
     t.field('verifiedSeller', { type: 'BoolFilter' })
-    t.field('role', { type: 'StringFilter' })
+    t.field('role', { type: 'EnumUserRoleFilter' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('updatedAt', { type: 'DateTimeFilter' })
     t.field('userFavoriteHorses', {
@@ -1162,7 +897,7 @@ export const UserWhereUniqueInput = inputObjectType({
     t.field('phoneNumber', { type: 'StringNullableFilter' })
     t.field('whatsAppNumber', { type: 'StringNullableFilter' })
     t.field('verifiedSeller', { type: 'BoolFilter' })
-    t.field('role', { type: 'StringFilter' })
+    t.field('role', { type: 'EnumUserRoleFilter' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('updatedAt', { type: 'DateTimeFilter' })
     t.field('userFavoriteHorses', {
@@ -1210,7 +945,7 @@ export const UserScalarWhereWithAggregatesInput = inputObjectType({
     t.field('email', { type: 'StringNullableWithAggregatesFilter' })
     t.field('whatsAppNumber', { type: 'StringNullableWithAggregatesFilter' })
     t.field('verifiedSeller', { type: 'BoolWithAggregatesFilter' })
-    t.field('role', { type: 'StringWithAggregatesFilter' })
+    t.field('role', { type: 'EnumUserRoleWithAggregatesFilter' })
     t.field('createdAt', { type: 'DateTimeWithAggregatesFilter' })
     t.field('updatedAt', { type: 'DateTimeWithAggregatesFilter' })
   },
@@ -1520,319 +1255,6 @@ export const HorseGenderUncheckedUpdateManyInput = inputObjectType({
   },
 })
 
-export const HorsePhotoCreateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoCreateInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.nonNull.field('horse', { type: 'HorseCreateNestedOneWithoutPhotosInput' })
-  },
-})
-
-export const HorsePhotoUncheckedCreateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoUncheckedCreateInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.nonNull.field('horseId', { type: 'String' })
-  },
-})
-
-export const HorsePhotoUpdateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoUpdateInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('horse', { type: 'HorseUpdateOneRequiredWithoutPhotosNestedInput' })
-  },
-})
-
-export const HorsePhotoUncheckedUpdateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoUncheckedUpdateInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('horseId', { type: 'StringFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorsePhotoCreateManyInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoCreateManyInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.nonNull.field('horseId', { type: 'String' })
-  },
-})
-
-export const HorsePhotoUpdateManyMutationInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoUpdateManyMutationInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorsePhotoUncheckedUpdateManyInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoUncheckedUpdateManyInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('horseId', { type: 'StringFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorseVetReportCreateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportCreateInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.nonNull.field('horse', {
-      type: 'HorseCreateNestedOneWithoutVetReportInput',
-    })
-  },
-})
-
-export const HorseVetReportUncheckedCreateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportUncheckedCreateInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('horseId', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorseVetReportUpdateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportUpdateInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('horse', {
-      type: 'HorseUpdateOneRequiredWithoutVetReportNestedInput',
-    })
-  },
-})
-
-export const HorseVetReportUncheckedUpdateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportUncheckedUpdateInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('horseId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorseVetReportCreateManyInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportCreateManyInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('horseId', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorseVetReportUpdateManyMutationInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportUpdateManyMutationInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorseVetReportUncheckedUpdateManyInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportUncheckedUpdateManyInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('horseId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorseXrayResultsCreateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsCreateInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.nonNull.field('horse', {
-      type: 'HorseCreateNestedOneWithoutXrayResultsInput',
-    })
-  },
-})
-
-export const HorseXrayResultsUncheckedCreateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsUncheckedCreateInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('horseId', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorseXrayResultsUpdateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsUpdateInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('horse', {
-      type: 'HorseUpdateOneRequiredWithoutXrayResultsNestedInput',
-    })
-  },
-})
-
-export const HorseXrayResultsUncheckedUpdateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsUncheckedUpdateInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('horseId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorseXrayResultsCreateManyInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsCreateManyInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('horseId', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorseXrayResultsUpdateManyMutationInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsUpdateManyMutationInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorseXrayResultsUncheckedUpdateManyInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsUncheckedUpdateManyInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('horseId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
 export const HorseCreateInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -1847,8 +1269,11 @@ export const HorseCreateInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutHorsesInput' })
@@ -1860,13 +1285,6 @@ export const HorseCreateInput = inputObjectType({
     })
     t.nonNull.field('discipline', {
       type: 'HorseDisciplineCreateNestedOneWithoutHorsesInput',
-    })
-    t.field('photos', { type: 'HorsePhotoCreateNestedManyWithoutHorseInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsCreateNestedOneWithoutHorseInput',
     })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesCreateNestedManyWithoutHorseInput',
@@ -1892,19 +1310,13 @@ export const HorseUncheckedCreateInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedCreateNestedManyWithoutHorseInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedCreateNestedOneWithoutHorseInput',
-    })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUncheckedCreateNestedManyWithoutHorseInput',
     })
@@ -1925,8 +1337,11 @@ export const HorseUpdateInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('user', { type: 'UserUpdateOneRequiredWithoutHorsesNestedInput' })
@@ -1938,13 +1353,6 @@ export const HorseUpdateInput = inputObjectType({
     })
     t.field('discipline', {
       type: 'HorseDisciplineUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('photos', { type: 'HorsePhotoUpdateManyWithoutHorseNestedInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUpdateOneWithoutHorseNestedInput',
     })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUpdateManyWithoutHorseNestedInput',
@@ -1970,19 +1378,13 @@ export const HorseUncheckedUpdateInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedUpdateManyWithoutHorseNestedInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedUpdateOneWithoutHorseNestedInput',
-    })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUncheckedUpdateManyWithoutHorseNestedInput',
     })
@@ -2007,8 +1409,11 @@ export const HorseCreateManyInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
   },
@@ -2028,8 +1433,11 @@ export const HorseUpdateManyMutationInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
   },
@@ -2053,8 +1461,11 @@ export const HorseUncheckedUpdateManyInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
   },
@@ -2395,7 +1806,7 @@ export const UserCreateInput = inputObjectType({
     t.field('email', { type: 'String' })
     t.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('userFavoriteHorses', {
@@ -2421,7 +1832,7 @@ export const UserUncheckedCreateInput = inputObjectType({
     t.field('email', { type: 'String' })
     t.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('userFavoriteHorses', {
@@ -2453,7 +1864,7 @@ export const UserUpdateInput = inputObjectType({
       type: 'NullableStringFieldUpdateOperationsInput',
     })
     t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('userFavoriteHorses', {
@@ -2481,7 +1892,7 @@ export const UserUncheckedUpdateInput = inputObjectType({
       type: 'NullableStringFieldUpdateOperationsInput',
     })
     t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('userFavoriteHorses', {
@@ -2511,7 +1922,7 @@ export const UserCreateManyInput = inputObjectType({
     t.field('email', { type: 'String' })
     t.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
   },
@@ -2531,7 +1942,7 @@ export const UserUpdateManyMutationInput = inputObjectType({
       type: 'NullableStringFieldUpdateOperationsInput',
     })
     t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
   },
@@ -2551,7 +1962,7 @@ export const UserUncheckedUpdateManyInput = inputObjectType({
       type: 'NullableStringFieldUpdateOperationsInput',
     })
     t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
   },
@@ -2573,6 +1984,7 @@ export const StringFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
+    t.field('mode', { type: 'QueryMode' })
     t.field('not', { type: 'NestedStringFilter' })
   },
 })
@@ -2674,6 +2086,7 @@ export const StringWithAggregatesFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
+    t.field('mode', { type: 'QueryMode' })
     t.field('not', { type: 'NestedStringWithAggregatesFilter' })
     t.field('_count', { type: 'NestedIntFilter' })
     t.field('_min', { type: 'NestedStringFilter' })
@@ -2779,174 +2192,6 @@ export const HorseGenderMinOrderByAggregateInput = inputObjectType({
   },
 })
 
-export const HorseScalarRelationFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseScalarRelationFilter',
-  definition(t) {
-    t.field('is', { type: 'HorseWhereInput' })
-    t.field('isNot', { type: 'HorseWhereInput' })
-  },
-})
-
-export const HorsePhotoCountOrderByAggregateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoCountOrderByAggregateInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-  },
-})
-
-export const HorsePhotoMaxOrderByAggregateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoMaxOrderByAggregateInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-  },
-})
-
-export const HorsePhotoMinOrderByAggregateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoMinOrderByAggregateInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-  },
-})
-
-export const BoolFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'BoolFilter',
-  definition(t) {
-    t.field('equals', { type: 'Boolean' })
-    t.field('not', { type: 'NestedBoolFilter' })
-  },
-})
-
-export const HorseVetReportCountOrderByAggregateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportCountOrderByAggregateInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('public', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-  },
-})
-
-export const HorseVetReportMaxOrderByAggregateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportMaxOrderByAggregateInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('public', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-  },
-})
-
-export const HorseVetReportMinOrderByAggregateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportMinOrderByAggregateInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('public', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-  },
-})
-
-export const BoolWithAggregatesFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'BoolWithAggregatesFilter',
-  definition(t) {
-    t.field('equals', { type: 'Boolean' })
-    t.field('not', { type: 'NestedBoolWithAggregatesFilter' })
-    t.field('_count', { type: 'NestedIntFilter' })
-    t.field('_min', { type: 'NestedBoolFilter' })
-    t.field('_max', { type: 'NestedBoolFilter' })
-  },
-})
-
-export const HorseXrayResultsCountOrderByAggregateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsCountOrderByAggregateInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('public', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-  },
-})
-
-export const HorseXrayResultsMaxOrderByAggregateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsMaxOrderByAggregateInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('public', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-  },
-})
-
-export const HorseXrayResultsMinOrderByAggregateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsMinOrderByAggregateInput',
-  definition(t) {
-    t.field('id', { type: 'SortOrder' })
-    t.field('horseId', { type: 'SortOrder' })
-    t.field('url', { type: 'SortOrder' })
-    t.field('public', { type: 'SortOrder' })
-    t.field('createdAt', { type: 'SortOrder' })
-    t.field('updatedAt', { type: 'SortOrder' })
-  },
-})
-
 export const StringNullableFilter = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -2963,6 +2208,7 @@ export const StringNullableFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
+    t.field('mode', { type: 'QueryMode' })
     t.field('not', { type: 'NestedStringNullableFilter' })
   },
 })
@@ -2998,6 +2244,33 @@ export const FloatFilter = inputObjectType({
     t.field('gt', { type: 'Float' })
     t.field('gte', { type: 'Float' })
     t.field('not', { type: 'NestedFloatFilter' })
+  },
+})
+
+export const StringNullableListFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'StringNullableListFilter',
+  definition(t) {
+    t.list.field('equals', { type: 'String' })
+    t.field('has', { type: 'String' })
+    t.list.field('hasEvery', { type: 'String' })
+    t.list.field('hasSome', { type: 'String' })
+    t.field('isEmpty', { type: 'Boolean' })
+  },
+})
+
+export const EnumHorseStatusFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'EnumHorseStatusFilter',
+  definition(t) {
+    t.field('equals', { type: 'HorseStatus' })
+    t.list.field('in', { type: 'HorseStatus' })
+    t.list.field('notIn', { type: 'HorseStatus' })
+    t.field('not', { type: 'NestedEnumHorseStatusFilter' })
   },
 })
 
@@ -3045,40 +2318,6 @@ export const HorseDisciplineScalarRelationFilter = inputObjectType({
   },
 })
 
-export const HorsePhotoListRelationFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoListRelationFilter',
-  definition(t) {
-    t.field('every', { type: 'HorsePhotoWhereInput' })
-    t.field('some', { type: 'HorsePhotoWhereInput' })
-    t.field('none', { type: 'HorsePhotoWhereInput' })
-  },
-})
-
-export const HorseVetReportNullableScalarRelationFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportNullableScalarRelationFilter',
-  definition(t) {
-    t.field('is', { type: 'HorseVetReportWhereInput' })
-    t.field('isNot', { type: 'HorseVetReportWhereInput' })
-  },
-})
-
-export const HorseXrayResultsNullableScalarRelationFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsNullableScalarRelationFilter',
-  definition(t) {
-    t.field('is', { type: 'HorseXrayResultsWhereInput' })
-    t.field('isNot', { type: 'HorseXrayResultsWhereInput' })
-  },
-})
-
 export const UserFavoriteHorsesListRelationFilter = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -3099,16 +2338,6 @@ export const SortOrderInput = inputObjectType({
   definition(t) {
     t.nonNull.field('sort', { type: 'SortOrder' })
     t.field('nulls', { type: 'NullsOrder' })
-  },
-})
-
-export const HorsePhotoOrderByRelationAggregateInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoOrderByRelationAggregateInput',
-  definition(t) {
-    t.field('_count', { type: 'SortOrder' })
   },
 })
 
@@ -3140,7 +2369,10 @@ export const HorseCountOrderByAggregateInput = inputObjectType({
     t.field('location', { type: 'SortOrder' })
     t.field('price', { type: 'SortOrder' })
     t.field('description', { type: 'SortOrder' })
+    t.field('photos', { type: 'SortOrder' })
     t.field('videoUrl', { type: 'SortOrder' })
+    t.field('vetReport', { type: 'SortOrder' })
+    t.field('xrayResults', { type: 'SortOrder' })
     t.field('status', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('updatedAt', { type: 'SortOrder' })
@@ -3178,6 +2410,8 @@ export const HorseMaxOrderByAggregateInput = inputObjectType({
     t.field('price', { type: 'SortOrder' })
     t.field('description', { type: 'SortOrder' })
     t.field('videoUrl', { type: 'SortOrder' })
+    t.field('vetReport', { type: 'SortOrder' })
+    t.field('xrayResults', { type: 'SortOrder' })
     t.field('status', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('updatedAt', { type: 'SortOrder' })
@@ -3203,6 +2437,8 @@ export const HorseMinOrderByAggregateInput = inputObjectType({
     t.field('price', { type: 'SortOrder' })
     t.field('description', { type: 'SortOrder' })
     t.field('videoUrl', { type: 'SortOrder' })
+    t.field('vetReport', { type: 'SortOrder' })
+    t.field('xrayResults', { type: 'SortOrder' })
     t.field('status', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('updatedAt', { type: 'SortOrder' })
@@ -3237,6 +2473,7 @@ export const StringNullableWithAggregatesFilter = inputObjectType({
     t.field('contains', { type: 'String' })
     t.field('startsWith', { type: 'String' })
     t.field('endsWith', { type: 'String' })
+    t.field('mode', { type: 'QueryMode' })
     t.field('not', { type: 'NestedStringNullableWithAggregatesFilter' })
     t.field('_count', { type: 'NestedIntNullableFilter' })
     t.field('_min', { type: 'NestedStringNullableFilter' })
@@ -3288,6 +2525,33 @@ export const FloatWithAggregatesFilter = inputObjectType({
   },
 })
 
+export const EnumHorseStatusWithAggregatesFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'EnumHorseStatusWithAggregatesFilter',
+  definition(t) {
+    t.field('equals', { type: 'HorseStatus' })
+    t.list.field('in', { type: 'HorseStatus' })
+    t.list.field('notIn', { type: 'HorseStatus' })
+    t.field('not', { type: 'NestedEnumHorseStatusWithAggregatesFilter' })
+    t.field('_count', { type: 'NestedIntFilter' })
+    t.field('_min', { type: 'NestedEnumHorseStatusFilter' })
+    t.field('_max', { type: 'NestedEnumHorseStatusFilter' })
+  },
+})
+
+export const BoolFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'BoolFilter',
+  definition(t) {
+    t.field('equals', { type: 'Boolean' })
+    t.field('not', { type: 'NestedBoolFilter' })
+  },
+})
+
 export const NotificationCountOrderByAggregateInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -3333,6 +2597,31 @@ export const NotificationMinOrderByAggregateInput = inputObjectType({
     t.field('read', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('updatedAt', { type: 'SortOrder' })
+  },
+})
+
+export const BoolWithAggregatesFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'BoolWithAggregatesFilter',
+  definition(t) {
+    t.field('equals', { type: 'Boolean' })
+    t.field('not', { type: 'NestedBoolWithAggregatesFilter' })
+    t.field('_count', { type: 'NestedIntFilter' })
+    t.field('_min', { type: 'NestedBoolFilter' })
+    t.field('_max', { type: 'NestedBoolFilter' })
+  },
+})
+
+export const HorseScalarRelationFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'HorseScalarRelationFilter',
+  definition(t) {
+    t.field('is', { type: 'HorseWhereInput' })
+    t.field('isNot', { type: 'HorseWhereInput' })
   },
 })
 
@@ -3455,6 +2744,19 @@ export const UserReviewSumOrderByAggregateInput = inputObjectType({
   },
 })
 
+export const EnumUserRoleFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'EnumUserRoleFilter',
+  definition(t) {
+    t.field('equals', { type: 'UserRole' })
+    t.list.field('in', { type: 'UserRole' })
+    t.list.field('notIn', { type: 'UserRole' })
+    t.field('not', { type: 'NestedEnumUserRoleFilter' })
+  },
+})
+
 export const NotificationListRelationFilter = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -3550,6 +2852,22 @@ export const UserMinOrderByAggregateInput = inputObjectType({
     t.field('role', { type: 'SortOrder' })
     t.field('createdAt', { type: 'SortOrder' })
     t.field('updatedAt', { type: 'SortOrder' })
+  },
+})
+
+export const EnumUserRoleWithAggregatesFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'EnumUserRoleWithAggregatesFilter',
+  definition(t) {
+    t.field('equals', { type: 'UserRole' })
+    t.list.field('in', { type: 'UserRole' })
+    t.list.field('notIn', { type: 'UserRole' })
+    t.field('not', { type: 'NestedEnumUserRoleWithAggregatesFilter' })
+    t.field('_count', { type: 'NestedIntFilter' })
+    t.field('_min', { type: 'NestedEnumUserRoleFilter' })
+    t.field('_max', { type: 'NestedEnumUserRoleFilter' })
   },
 })
 
@@ -3839,111 +3157,15 @@ export const HorseUncheckedUpdateManyWithoutGenderNestedInput = inputObjectType(
   },
 )
 
-export const HorseCreateNestedOneWithoutPhotosInput = inputObjectType({
+export const HorseCreatephotosInput = inputObjectType({
   nonNullDefaults: {
     input: false,
   },
-  name: 'HorseCreateNestedOneWithoutPhotosInput',
+  name: 'HorseCreatephotosInput',
   definition(t) {
-    t.field('create', { type: 'HorseCreateWithoutPhotosInput' })
-    t.field('connectOrCreate', {
-      type: 'HorseCreateOrConnectWithoutPhotosInput',
-    })
-    t.field('connect', { type: 'HorseWhereUniqueInput' })
+    t.nonNull.field('set', { type: 'String' })
   },
 })
-
-export const HorseUpdateOneRequiredWithoutPhotosNestedInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUpdateOneRequiredWithoutPhotosNestedInput',
-  definition(t) {
-    t.field('create', { type: 'HorseCreateWithoutPhotosInput' })
-    t.field('connectOrCreate', {
-      type: 'HorseCreateOrConnectWithoutPhotosInput',
-    })
-    t.field('upsert', { type: 'HorseUpsertWithoutPhotosInput' })
-    t.field('connect', { type: 'HorseWhereUniqueInput' })
-    t.field('update', { type: 'HorseUpdateToOneWithWhereWithoutPhotosInput' })
-  },
-})
-
-export const HorseCreateNestedOneWithoutVetReportInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseCreateNestedOneWithoutVetReportInput',
-  definition(t) {
-    t.field('create', { type: 'HorseCreateWithoutVetReportInput' })
-    t.field('connectOrCreate', {
-      type: 'HorseCreateOrConnectWithoutVetReportInput',
-    })
-    t.field('connect', { type: 'HorseWhereUniqueInput' })
-  },
-})
-
-export const BoolFieldUpdateOperationsInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'BoolFieldUpdateOperationsInput',
-  definition(t) {
-    t.field('set', { type: 'Boolean' })
-  },
-})
-
-export const HorseUpdateOneRequiredWithoutVetReportNestedInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseUpdateOneRequiredWithoutVetReportNestedInput',
-    definition(t) {
-      t.field('create', { type: 'HorseCreateWithoutVetReportInput' })
-      t.field('connectOrCreate', {
-        type: 'HorseCreateOrConnectWithoutVetReportInput',
-      })
-      t.field('upsert', { type: 'HorseUpsertWithoutVetReportInput' })
-      t.field('connect', { type: 'HorseWhereUniqueInput' })
-      t.field('update', {
-        type: 'HorseUpdateToOneWithWhereWithoutVetReportInput',
-      })
-    },
-  })
-
-export const HorseCreateNestedOneWithoutXrayResultsInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseCreateNestedOneWithoutXrayResultsInput',
-  definition(t) {
-    t.field('create', { type: 'HorseCreateWithoutXrayResultsInput' })
-    t.field('connectOrCreate', {
-      type: 'HorseCreateOrConnectWithoutXrayResultsInput',
-    })
-    t.field('connect', { type: 'HorseWhereUniqueInput' })
-  },
-})
-
-export const HorseUpdateOneRequiredWithoutXrayResultsNestedInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseUpdateOneRequiredWithoutXrayResultsNestedInput',
-    definition(t) {
-      t.field('create', { type: 'HorseCreateWithoutXrayResultsInput' })
-      t.field('connectOrCreate', {
-        type: 'HorseCreateOrConnectWithoutXrayResultsInput',
-      })
-      t.field('upsert', { type: 'HorseUpsertWithoutXrayResultsInput' })
-      t.field('connect', { type: 'HorseWhereUniqueInput' })
-      t.field('update', {
-        type: 'HorseUpdateToOneWithWhereWithoutXrayResultsInput',
-      })
-    },
-  })
 
 export const UserCreateNestedOneWithoutHorsesInput = inputObjectType({
   nonNullDefaults: {
@@ -4003,51 +3225,6 @@ export const HorseDisciplineCreateNestedOneWithoutHorsesInput = inputObjectType(
   },
 )
 
-export const HorsePhotoCreateNestedManyWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoCreateNestedManyWithoutHorseInput',
-  definition(t) {
-    t.list.field('create', { type: 'HorsePhotoCreateWithoutHorseInput' })
-    t.list.field('connectOrCreate', {
-      type: 'HorsePhotoCreateOrConnectWithoutHorseInput',
-    })
-    t.field('createMany', { type: 'HorsePhotoCreateManyHorseInputEnvelope' })
-    t.list.field('connect', { type: 'HorsePhotoWhereUniqueInput' })
-  },
-})
-
-export const HorseVetReportCreateNestedOneWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportCreateNestedOneWithoutHorseInput',
-  definition(t) {
-    t.field('create', { type: 'HorseVetReportCreateWithoutHorseInput' })
-    t.field('connectOrCreate', {
-      type: 'HorseVetReportCreateOrConnectWithoutHorseInput',
-    })
-    t.field('connect', { type: 'HorseVetReportWhereUniqueInput' })
-  },
-})
-
-export const HorseXrayResultsCreateNestedOneWithoutHorseInput = inputObjectType(
-  {
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseXrayResultsCreateNestedOneWithoutHorseInput',
-    definition(t) {
-      t.field('create', { type: 'HorseXrayResultsCreateWithoutHorseInput' })
-      t.field('connectOrCreate', {
-        type: 'HorseXrayResultsCreateOrConnectWithoutHorseInput',
-      })
-      t.field('connect', { type: 'HorseXrayResultsWhereUniqueInput' })
-    },
-  },
-)
-
 export const UserFavoriteHorsesCreateNestedManyWithoutHorseInput =
   inputObjectType({
     nonNullDefaults: {
@@ -4065,52 +3242,6 @@ export const UserFavoriteHorsesCreateNestedManyWithoutHorseInput =
         type: 'UserFavoriteHorsesCreateManyHorseInputEnvelope',
       })
       t.list.field('connect', { type: 'UserFavoriteHorsesWhereUniqueInput' })
-    },
-  })
-
-export const HorsePhotoUncheckedCreateNestedManyWithoutHorseInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorsePhotoUncheckedCreateNestedManyWithoutHorseInput',
-    definition(t) {
-      t.list.field('create', { type: 'HorsePhotoCreateWithoutHorseInput' })
-      t.list.field('connectOrCreate', {
-        type: 'HorsePhotoCreateOrConnectWithoutHorseInput',
-      })
-      t.field('createMany', { type: 'HorsePhotoCreateManyHorseInputEnvelope' })
-      t.list.field('connect', { type: 'HorsePhotoWhereUniqueInput' })
-    },
-  })
-
-export const HorseVetReportUncheckedCreateNestedOneWithoutHorseInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseVetReportUncheckedCreateNestedOneWithoutHorseInput',
-    definition(t) {
-      t.field('create', { type: 'HorseVetReportCreateWithoutHorseInput' })
-      t.field('connectOrCreate', {
-        type: 'HorseVetReportCreateOrConnectWithoutHorseInput',
-      })
-      t.field('connect', { type: 'HorseVetReportWhereUniqueInput' })
-    },
-  })
-
-export const HorseXrayResultsUncheckedCreateNestedOneWithoutHorseInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseXrayResultsUncheckedCreateNestedOneWithoutHorseInput',
-    definition(t) {
-      t.field('create', { type: 'HorseXrayResultsCreateWithoutHorseInput' })
-      t.field('connectOrCreate', {
-        type: 'HorseXrayResultsCreateOrConnectWithoutHorseInput',
-      })
-      t.field('connect', { type: 'HorseXrayResultsWhereUniqueInput' })
     },
   })
 
@@ -4169,6 +3300,27 @@ export const FloatFieldUpdateOperationsInput = inputObjectType({
     t.field('decrement', { type: 'Float' })
     t.field('multiply', { type: 'Float' })
     t.field('divide', { type: 'Float' })
+  },
+})
+
+export const HorseUpdatephotosInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'HorseUpdatephotosInput',
+  definition(t) {
+    t.list.field('set', { type: 'String' })
+    t.list.field('push', { type: 'String' })
+  },
+})
+
+export const EnumHorseStatusFieldUpdateOperationsInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'EnumHorseStatusFieldUpdateOperationsInput',
+  definition(t) {
+    t.field('set', { type: 'HorseStatus' })
   },
 })
 
@@ -4245,76 +3397,6 @@ export const HorseDisciplineUpdateOneRequiredWithoutHorsesNestedInput =
     },
   })
 
-export const HorsePhotoUpdateManyWithoutHorseNestedInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoUpdateManyWithoutHorseNestedInput',
-  definition(t) {
-    t.list.field('create', { type: 'HorsePhotoCreateWithoutHorseInput' })
-    t.list.field('connectOrCreate', {
-      type: 'HorsePhotoCreateOrConnectWithoutHorseInput',
-    })
-    t.list.field('upsert', {
-      type: 'HorsePhotoUpsertWithWhereUniqueWithoutHorseInput',
-    })
-    t.field('createMany', { type: 'HorsePhotoCreateManyHorseInputEnvelope' })
-    t.list.field('set', { type: 'HorsePhotoWhereUniqueInput' })
-    t.list.field('disconnect', { type: 'HorsePhotoWhereUniqueInput' })
-    t.list.field('delete', { type: 'HorsePhotoWhereUniqueInput' })
-    t.list.field('connect', { type: 'HorsePhotoWhereUniqueInput' })
-    t.list.field('update', {
-      type: 'HorsePhotoUpdateWithWhereUniqueWithoutHorseInput',
-    })
-    t.list.field('updateMany', {
-      type: 'HorsePhotoUpdateManyWithWhereWithoutHorseInput',
-    })
-    t.list.field('deleteMany', { type: 'HorsePhotoScalarWhereInput' })
-  },
-})
-
-export const HorseVetReportUpdateOneWithoutHorseNestedInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportUpdateOneWithoutHorseNestedInput',
-  definition(t) {
-    t.field('create', { type: 'HorseVetReportCreateWithoutHorseInput' })
-    t.field('connectOrCreate', {
-      type: 'HorseVetReportCreateOrConnectWithoutHorseInput',
-    })
-    t.field('upsert', { type: 'HorseVetReportUpsertWithoutHorseInput' })
-    t.field('disconnect', { type: 'HorseVetReportWhereInput' })
-    t.field('delete', { type: 'HorseVetReportWhereInput' })
-    t.field('connect', { type: 'HorseVetReportWhereUniqueInput' })
-    t.field('update', {
-      type: 'HorseVetReportUpdateToOneWithWhereWithoutHorseInput',
-    })
-  },
-})
-
-export const HorseXrayResultsUpdateOneWithoutHorseNestedInput = inputObjectType(
-  {
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseXrayResultsUpdateOneWithoutHorseNestedInput',
-    definition(t) {
-      t.field('create', { type: 'HorseXrayResultsCreateWithoutHorseInput' })
-      t.field('connectOrCreate', {
-        type: 'HorseXrayResultsCreateOrConnectWithoutHorseInput',
-      })
-      t.field('upsert', { type: 'HorseXrayResultsUpsertWithoutHorseInput' })
-      t.field('disconnect', { type: 'HorseXrayResultsWhereInput' })
-      t.field('delete', { type: 'HorseXrayResultsWhereInput' })
-      t.field('connect', { type: 'HorseXrayResultsWhereUniqueInput' })
-      t.field('update', {
-        type: 'HorseXrayResultsUpdateToOneWithWhereWithoutHorseInput',
-      })
-    },
-  },
-)
-
 export const UserFavoriteHorsesUpdateManyWithoutHorseNestedInput =
   inputObjectType({
     nonNullDefaults: {
@@ -4345,77 +3427,6 @@ export const UserFavoriteHorsesUpdateManyWithoutHorseNestedInput =
         type: 'UserFavoriteHorsesUpdateManyWithWhereWithoutHorseInput',
       })
       t.list.field('deleteMany', { type: 'UserFavoriteHorsesScalarWhereInput' })
-    },
-  })
-
-export const HorsePhotoUncheckedUpdateManyWithoutHorseNestedInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorsePhotoUncheckedUpdateManyWithoutHorseNestedInput',
-    definition(t) {
-      t.list.field('create', { type: 'HorsePhotoCreateWithoutHorseInput' })
-      t.list.field('connectOrCreate', {
-        type: 'HorsePhotoCreateOrConnectWithoutHorseInput',
-      })
-      t.list.field('upsert', {
-        type: 'HorsePhotoUpsertWithWhereUniqueWithoutHorseInput',
-      })
-      t.field('createMany', { type: 'HorsePhotoCreateManyHorseInputEnvelope' })
-      t.list.field('set', { type: 'HorsePhotoWhereUniqueInput' })
-      t.list.field('disconnect', { type: 'HorsePhotoWhereUniqueInput' })
-      t.list.field('delete', { type: 'HorsePhotoWhereUniqueInput' })
-      t.list.field('connect', { type: 'HorsePhotoWhereUniqueInput' })
-      t.list.field('update', {
-        type: 'HorsePhotoUpdateWithWhereUniqueWithoutHorseInput',
-      })
-      t.list.field('updateMany', {
-        type: 'HorsePhotoUpdateManyWithWhereWithoutHorseInput',
-      })
-      t.list.field('deleteMany', { type: 'HorsePhotoScalarWhereInput' })
-    },
-  })
-
-export const HorseVetReportUncheckedUpdateOneWithoutHorseNestedInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseVetReportUncheckedUpdateOneWithoutHorseNestedInput',
-    definition(t) {
-      t.field('create', { type: 'HorseVetReportCreateWithoutHorseInput' })
-      t.field('connectOrCreate', {
-        type: 'HorseVetReportCreateOrConnectWithoutHorseInput',
-      })
-      t.field('upsert', { type: 'HorseVetReportUpsertWithoutHorseInput' })
-      t.field('disconnect', { type: 'HorseVetReportWhereInput' })
-      t.field('delete', { type: 'HorseVetReportWhereInput' })
-      t.field('connect', { type: 'HorseVetReportWhereUniqueInput' })
-      t.field('update', {
-        type: 'HorseVetReportUpdateToOneWithWhereWithoutHorseInput',
-      })
-    },
-  })
-
-export const HorseXrayResultsUncheckedUpdateOneWithoutHorseNestedInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseXrayResultsUncheckedUpdateOneWithoutHorseNestedInput',
-    definition(t) {
-      t.field('create', { type: 'HorseXrayResultsCreateWithoutHorseInput' })
-      t.field('connectOrCreate', {
-        type: 'HorseXrayResultsCreateOrConnectWithoutHorseInput',
-      })
-      t.field('upsert', { type: 'HorseXrayResultsUpsertWithoutHorseInput' })
-      t.field('disconnect', { type: 'HorseXrayResultsWhereInput' })
-      t.field('delete', { type: 'HorseXrayResultsWhereInput' })
-      t.field('connect', { type: 'HorseXrayResultsWhereUniqueInput' })
-      t.field('update', {
-        type: 'HorseXrayResultsUpdateToOneWithWhereWithoutHorseInput',
-      })
     },
   })
 
@@ -4463,6 +3474,16 @@ export const UserCreateNestedOneWithoutNotificationsInput = inputObjectType({
       type: 'UserCreateOrConnectWithoutNotificationsInput',
     })
     t.field('connect', { type: 'UserWhereUniqueInput' })
+  },
+})
+
+export const BoolFieldUpdateOperationsInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'BoolFieldUpdateOperationsInput',
+  definition(t) {
+    t.field('set', { type: 'Boolean' })
   },
 })
 
@@ -4713,6 +3734,16 @@ export const UserReviewUncheckedCreateNestedManyWithoutUserInput =
       t.list.field('connect', { type: 'UserReviewWhereUniqueInput' })
     },
   })
+
+export const EnumUserRoleFieldUpdateOperationsInput = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'EnumUserRoleFieldUpdateOperationsInput',
+  definition(t) {
+    t.field('set', { type: 'UserRole' })
+  },
+})
 
 export const UserFavoriteHorsesUpdateManyWithoutUserNestedInput =
   inputObjectType({
@@ -5047,31 +4078,6 @@ export const NestedDateTimeWithAggregatesFilter = inputObjectType({
   },
 })
 
-export const NestedBoolFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'NestedBoolFilter',
-  definition(t) {
-    t.field('equals', { type: 'Boolean' })
-    t.field('not', { type: 'NestedBoolFilter' })
-  },
-})
-
-export const NestedBoolWithAggregatesFilter = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'NestedBoolWithAggregatesFilter',
-  definition(t) {
-    t.field('equals', { type: 'Boolean' })
-    t.field('not', { type: 'NestedBoolWithAggregatesFilter' })
-    t.field('_count', { type: 'NestedIntFilter' })
-    t.field('_min', { type: 'NestedBoolFilter' })
-    t.field('_max', { type: 'NestedBoolFilter' })
-  },
-})
-
 export const NestedStringNullableFilter = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -5106,6 +4112,19 @@ export const NestedFloatFilter = inputObjectType({
     t.field('gt', { type: 'Float' })
     t.field('gte', { type: 'Float' })
     t.field('not', { type: 'NestedFloatFilter' })
+  },
+})
+
+export const NestedEnumHorseStatusFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'NestedEnumHorseStatusFilter',
+  definition(t) {
+    t.field('equals', { type: 'HorseStatus' })
+    t.list.field('in', { type: 'HorseStatus' })
+    t.list.field('notIn', { type: 'HorseStatus' })
+    t.field('not', { type: 'NestedEnumHorseStatusFilter' })
   },
 })
 
@@ -5193,6 +4212,76 @@ export const NestedFloatWithAggregatesFilter = inputObjectType({
   },
 })
 
+export const NestedEnumHorseStatusWithAggregatesFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'NestedEnumHorseStatusWithAggregatesFilter',
+  definition(t) {
+    t.field('equals', { type: 'HorseStatus' })
+    t.list.field('in', { type: 'HorseStatus' })
+    t.list.field('notIn', { type: 'HorseStatus' })
+    t.field('not', { type: 'NestedEnumHorseStatusWithAggregatesFilter' })
+    t.field('_count', { type: 'NestedIntFilter' })
+    t.field('_min', { type: 'NestedEnumHorseStatusFilter' })
+    t.field('_max', { type: 'NestedEnumHorseStatusFilter' })
+  },
+})
+
+export const NestedBoolFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'NestedBoolFilter',
+  definition(t) {
+    t.field('equals', { type: 'Boolean' })
+    t.field('not', { type: 'NestedBoolFilter' })
+  },
+})
+
+export const NestedBoolWithAggregatesFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'NestedBoolWithAggregatesFilter',
+  definition(t) {
+    t.field('equals', { type: 'Boolean' })
+    t.field('not', { type: 'NestedBoolWithAggregatesFilter' })
+    t.field('_count', { type: 'NestedIntFilter' })
+    t.field('_min', { type: 'NestedBoolFilter' })
+    t.field('_max', { type: 'NestedBoolFilter' })
+  },
+})
+
+export const NestedEnumUserRoleFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'NestedEnumUserRoleFilter',
+  definition(t) {
+    t.field('equals', { type: 'UserRole' })
+    t.list.field('in', { type: 'UserRole' })
+    t.list.field('notIn', { type: 'UserRole' })
+    t.field('not', { type: 'NestedEnumUserRoleFilter' })
+  },
+})
+
+export const NestedEnumUserRoleWithAggregatesFilter = inputObjectType({
+  nonNullDefaults: {
+    input: false,
+  },
+  name: 'NestedEnumUserRoleWithAggregatesFilter',
+  definition(t) {
+    t.field('equals', { type: 'UserRole' })
+    t.list.field('in', { type: 'UserRole' })
+    t.list.field('notIn', { type: 'UserRole' })
+    t.field('not', { type: 'NestedEnumUserRoleWithAggregatesFilter' })
+    t.field('_count', { type: 'NestedIntFilter' })
+    t.field('_min', { type: 'NestedEnumUserRoleFilter' })
+    t.field('_max', { type: 'NestedEnumUserRoleFilter' })
+  },
+})
+
 export const HorseCreateWithoutCategoryInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -5207,8 +4296,11 @@ export const HorseCreateWithoutCategoryInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutHorsesInput' })
@@ -5217,13 +4309,6 @@ export const HorseCreateWithoutCategoryInput = inputObjectType({
     })
     t.nonNull.field('discipline', {
       type: 'HorseDisciplineCreateNestedOneWithoutHorsesInput',
-    })
-    t.field('photos', { type: 'HorsePhotoCreateNestedManyWithoutHorseInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsCreateNestedOneWithoutHorseInput',
     })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesCreateNestedManyWithoutHorseInput',
@@ -5248,19 +4333,13 @@ export const HorseUncheckedCreateWithoutCategoryInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedCreateNestedManyWithoutHorseInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedCreateNestedOneWithoutHorseInput',
-    })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUncheckedCreateNestedManyWithoutHorseInput',
     })
@@ -5285,6 +4364,7 @@ export const HorseCreateManyCategoryInputEnvelope = inputObjectType({
   name: 'HorseCreateManyCategoryInputEnvelope',
   definition(t) {
     t.nonNull.field('data', { type: 'HorseCreateManyCategoryInput' })
+    t.field('skipDuplicates', { type: 'Boolean' })
   },
 })
 
@@ -5343,8 +4423,11 @@ export const HorseScalarWhereInput = inputObjectType({
     t.field('location', { type: 'StringFilter' })
     t.field('price', { type: 'FloatFilter' })
     t.field('description', { type: 'StringFilter' })
+    t.field('photos', { type: 'StringNullableListFilter' })
     t.field('videoUrl', { type: 'StringNullableFilter' })
-    t.field('status', { type: 'StringFilter' })
+    t.field('vetReport', { type: 'StringNullableFilter' })
+    t.field('xrayResults', { type: 'StringNullableFilter' })
+    t.field('status', { type: 'EnumHorseStatusFilter' })
     t.field('createdAt', { type: 'DateTimeFilter' })
     t.field('updatedAt', { type: 'DateTimeFilter' })
   },
@@ -5364,8 +4447,11 @@ export const HorseCreateWithoutDisciplineInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutHorsesInput' })
@@ -5374,13 +4460,6 @@ export const HorseCreateWithoutDisciplineInput = inputObjectType({
     })
     t.nonNull.field('gender', {
       type: 'HorseGenderCreateNestedOneWithoutHorsesInput',
-    })
-    t.field('photos', { type: 'HorsePhotoCreateNestedManyWithoutHorseInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsCreateNestedOneWithoutHorseInput',
     })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesCreateNestedManyWithoutHorseInput',
@@ -5405,19 +4484,13 @@ export const HorseUncheckedCreateWithoutDisciplineInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedCreateNestedManyWithoutHorseInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedCreateNestedOneWithoutHorseInput',
-    })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUncheckedCreateNestedManyWithoutHorseInput',
     })
@@ -5442,6 +4515,7 @@ export const HorseCreateManyDisciplineInputEnvelope = inputObjectType({
   name: 'HorseCreateManyDisciplineInputEnvelope',
   definition(t) {
     t.nonNull.field('data', { type: 'HorseCreateManyDisciplineInput' })
+    t.field('skipDuplicates', { type: 'Boolean' })
   },
 })
 
@@ -5497,8 +4571,11 @@ export const HorseCreateWithoutGenderInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutHorsesInput' })
@@ -5507,13 +4584,6 @@ export const HorseCreateWithoutGenderInput = inputObjectType({
     })
     t.nonNull.field('discipline', {
       type: 'HorseDisciplineCreateNestedOneWithoutHorsesInput',
-    })
-    t.field('photos', { type: 'HorsePhotoCreateNestedManyWithoutHorseInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsCreateNestedOneWithoutHorseInput',
     })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesCreateNestedManyWithoutHorseInput',
@@ -5538,19 +4608,13 @@ export const HorseUncheckedCreateWithoutGenderInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedCreateNestedManyWithoutHorseInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedCreateNestedOneWithoutHorseInput',
-    })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUncheckedCreateNestedManyWithoutHorseInput',
     })
@@ -5575,6 +4639,7 @@ export const HorseCreateManyGenderInputEnvelope = inputObjectType({
   name: 'HorseCreateManyGenderInputEnvelope',
   definition(t) {
     t.nonNull.field('data', { type: 'HorseCreateManyGenderInput' })
+    t.field('skipDuplicates', { type: 'Boolean' })
   },
 })
 
@@ -5612,546 +4677,6 @@ export const HorseUpdateManyWithWhereWithoutGenderInput = inputObjectType({
   },
 })
 
-export const HorseCreateWithoutPhotosInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseCreateWithoutPhotosInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('name', { type: 'String' })
-    t.field('pedigree', { type: 'String' })
-    t.nonNull.field('age', { type: 'Int' })
-    t.nonNull.field('height', { type: 'Int' })
-    t.nonNull.field('location', { type: 'String' })
-    t.nonNull.field('price', { type: 'Float' })
-    t.nonNull.field('description', { type: 'String' })
-    t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutHorsesInput' })
-    t.nonNull.field('category', {
-      type: 'HorseCategoryCreateNestedOneWithoutHorsesInput',
-    })
-    t.nonNull.field('gender', {
-      type: 'HorseGenderCreateNestedOneWithoutHorsesInput',
-    })
-    t.nonNull.field('discipline', {
-      type: 'HorseDisciplineCreateNestedOneWithoutHorsesInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsCreateNestedOneWithoutHorseInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesCreateNestedManyWithoutHorseInput',
-    })
-  },
-})
-
-export const HorseUncheckedCreateWithoutPhotosInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUncheckedCreateWithoutPhotosInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('userUid', { type: 'String' })
-    t.nonNull.field('categoryId', { type: 'String' })
-    t.nonNull.field('name', { type: 'String' })
-    t.field('pedigree', { type: 'String' })
-    t.nonNull.field('age', { type: 'Int' })
-    t.nonNull.field('genderId', { type: 'String' })
-    t.nonNull.field('height', { type: 'Int' })
-    t.nonNull.field('disciplineId', { type: 'String' })
-    t.nonNull.field('location', { type: 'String' })
-    t.nonNull.field('price', { type: 'Float' })
-    t.nonNull.field('description', { type: 'String' })
-    t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedCreateNestedOneWithoutHorseInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesUncheckedCreateNestedManyWithoutHorseInput',
-    })
-  },
-})
-
-export const HorseCreateOrConnectWithoutPhotosInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseCreateOrConnectWithoutPhotosInput',
-  definition(t) {
-    t.nonNull.field('where', { type: 'HorseWhereUniqueInput' })
-    t.nonNull.field('create', { type: 'HorseCreateWithoutPhotosInput' })
-  },
-})
-
-export const HorseUpsertWithoutPhotosInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUpsertWithoutPhotosInput',
-  definition(t) {
-    t.nonNull.field('update', { type: 'HorseUpdateWithoutPhotosInput' })
-    t.nonNull.field('create', { type: 'HorseCreateWithoutPhotosInput' })
-    t.field('where', { type: 'HorseWhereInput' })
-  },
-})
-
-export const HorseUpdateToOneWithWhereWithoutPhotosInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUpdateToOneWithWhereWithoutPhotosInput',
-  definition(t) {
-    t.field('where', { type: 'HorseWhereInput' })
-    t.nonNull.field('data', { type: 'HorseUpdateWithoutPhotosInput' })
-  },
-})
-
-export const HorseUpdateWithoutPhotosInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUpdateWithoutPhotosInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('name', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('pedigree', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('age', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('height', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('location', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
-    t.field('description', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('user', { type: 'UserUpdateOneRequiredWithoutHorsesNestedInput' })
-    t.field('category', {
-      type: 'HorseCategoryUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('gender', {
-      type: 'HorseGenderUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('discipline', {
-      type: 'HorseDisciplineUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesUpdateManyWithoutHorseNestedInput',
-    })
-  },
-})
-
-export const HorseUncheckedUpdateWithoutPhotosInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUncheckedUpdateWithoutPhotosInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('userUid', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('categoryId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('name', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('pedigree', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('age', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('genderId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('height', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('disciplineId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('location', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
-    t.field('description', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesUncheckedUpdateManyWithoutHorseNestedInput',
-    })
-  },
-})
-
-export const HorseCreateWithoutVetReportInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseCreateWithoutVetReportInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('name', { type: 'String' })
-    t.field('pedigree', { type: 'String' })
-    t.nonNull.field('age', { type: 'Int' })
-    t.nonNull.field('height', { type: 'Int' })
-    t.nonNull.field('location', { type: 'String' })
-    t.nonNull.field('price', { type: 'Float' })
-    t.nonNull.field('description', { type: 'String' })
-    t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutHorsesInput' })
-    t.nonNull.field('category', {
-      type: 'HorseCategoryCreateNestedOneWithoutHorsesInput',
-    })
-    t.nonNull.field('gender', {
-      type: 'HorseGenderCreateNestedOneWithoutHorsesInput',
-    })
-    t.nonNull.field('discipline', {
-      type: 'HorseDisciplineCreateNestedOneWithoutHorsesInput',
-    })
-    t.field('photos', { type: 'HorsePhotoCreateNestedManyWithoutHorseInput' })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsCreateNestedOneWithoutHorseInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesCreateNestedManyWithoutHorseInput',
-    })
-  },
-})
-
-export const HorseUncheckedCreateWithoutVetReportInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUncheckedCreateWithoutVetReportInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('userUid', { type: 'String' })
-    t.nonNull.field('categoryId', { type: 'String' })
-    t.nonNull.field('name', { type: 'String' })
-    t.field('pedigree', { type: 'String' })
-    t.nonNull.field('age', { type: 'Int' })
-    t.nonNull.field('genderId', { type: 'String' })
-    t.nonNull.field('height', { type: 'Int' })
-    t.nonNull.field('disciplineId', { type: 'String' })
-    t.nonNull.field('location', { type: 'String' })
-    t.nonNull.field('price', { type: 'Float' })
-    t.nonNull.field('description', { type: 'String' })
-    t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedCreateNestedManyWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedCreateNestedOneWithoutHorseInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesUncheckedCreateNestedManyWithoutHorseInput',
-    })
-  },
-})
-
-export const HorseCreateOrConnectWithoutVetReportInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseCreateOrConnectWithoutVetReportInput',
-  definition(t) {
-    t.nonNull.field('where', { type: 'HorseWhereUniqueInput' })
-    t.nonNull.field('create', { type: 'HorseCreateWithoutVetReportInput' })
-  },
-})
-
-export const HorseUpsertWithoutVetReportInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUpsertWithoutVetReportInput',
-  definition(t) {
-    t.nonNull.field('update', { type: 'HorseUpdateWithoutVetReportInput' })
-    t.nonNull.field('create', { type: 'HorseCreateWithoutVetReportInput' })
-    t.field('where', { type: 'HorseWhereInput' })
-  },
-})
-
-export const HorseUpdateToOneWithWhereWithoutVetReportInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUpdateToOneWithWhereWithoutVetReportInput',
-  definition(t) {
-    t.field('where', { type: 'HorseWhereInput' })
-    t.nonNull.field('data', { type: 'HorseUpdateWithoutVetReportInput' })
-  },
-})
-
-export const HorseUpdateWithoutVetReportInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUpdateWithoutVetReportInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('name', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('pedigree', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('age', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('height', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('location', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
-    t.field('description', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('user', { type: 'UserUpdateOneRequiredWithoutHorsesNestedInput' })
-    t.field('category', {
-      type: 'HorseCategoryUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('gender', {
-      type: 'HorseGenderUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('discipline', {
-      type: 'HorseDisciplineUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('photos', { type: 'HorsePhotoUpdateManyWithoutHorseNestedInput' })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesUpdateManyWithoutHorseNestedInput',
-    })
-  },
-})
-
-export const HorseUncheckedUpdateWithoutVetReportInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUncheckedUpdateWithoutVetReportInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('userUid', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('categoryId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('name', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('pedigree', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('age', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('genderId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('height', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('disciplineId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('location', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
-    t.field('description', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedUpdateManyWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesUncheckedUpdateManyWithoutHorseNestedInput',
-    })
-  },
-})
-
-export const HorseCreateWithoutXrayResultsInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseCreateWithoutXrayResultsInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('name', { type: 'String' })
-    t.field('pedigree', { type: 'String' })
-    t.nonNull.field('age', { type: 'Int' })
-    t.nonNull.field('height', { type: 'Int' })
-    t.nonNull.field('location', { type: 'String' })
-    t.nonNull.field('price', { type: 'Float' })
-    t.nonNull.field('description', { type: 'String' })
-    t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutHorsesInput' })
-    t.nonNull.field('category', {
-      type: 'HorseCategoryCreateNestedOneWithoutHorsesInput',
-    })
-    t.nonNull.field('gender', {
-      type: 'HorseGenderCreateNestedOneWithoutHorsesInput',
-    })
-    t.nonNull.field('discipline', {
-      type: 'HorseDisciplineCreateNestedOneWithoutHorsesInput',
-    })
-    t.field('photos', { type: 'HorsePhotoCreateNestedManyWithoutHorseInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportCreateNestedOneWithoutHorseInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesCreateNestedManyWithoutHorseInput',
-    })
-  },
-})
-
-export const HorseUncheckedCreateWithoutXrayResultsInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUncheckedCreateWithoutXrayResultsInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('userUid', { type: 'String' })
-    t.nonNull.field('categoryId', { type: 'String' })
-    t.nonNull.field('name', { type: 'String' })
-    t.field('pedigree', { type: 'String' })
-    t.nonNull.field('age', { type: 'Int' })
-    t.nonNull.field('genderId', { type: 'String' })
-    t.nonNull.field('height', { type: 'Int' })
-    t.nonNull.field('disciplineId', { type: 'String' })
-    t.nonNull.field('location', { type: 'String' })
-    t.nonNull.field('price', { type: 'Float' })
-    t.nonNull.field('description', { type: 'String' })
-    t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedCreateNestedManyWithoutHorseInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedCreateNestedOneWithoutHorseInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesUncheckedCreateNestedManyWithoutHorseInput',
-    })
-  },
-})
-
-export const HorseCreateOrConnectWithoutXrayResultsInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseCreateOrConnectWithoutXrayResultsInput',
-  definition(t) {
-    t.nonNull.field('where', { type: 'HorseWhereUniqueInput' })
-    t.nonNull.field('create', { type: 'HorseCreateWithoutXrayResultsInput' })
-  },
-})
-
-export const HorseUpsertWithoutXrayResultsInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUpsertWithoutXrayResultsInput',
-  definition(t) {
-    t.nonNull.field('update', { type: 'HorseUpdateWithoutXrayResultsInput' })
-    t.nonNull.field('create', { type: 'HorseCreateWithoutXrayResultsInput' })
-    t.field('where', { type: 'HorseWhereInput' })
-  },
-})
-
-export const HorseUpdateToOneWithWhereWithoutXrayResultsInput = inputObjectType(
-  {
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseUpdateToOneWithWhereWithoutXrayResultsInput',
-    definition(t) {
-      t.field('where', { type: 'HorseWhereInput' })
-      t.nonNull.field('data', { type: 'HorseUpdateWithoutXrayResultsInput' })
-    },
-  },
-)
-
-export const HorseUpdateWithoutXrayResultsInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUpdateWithoutXrayResultsInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('name', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('pedigree', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('age', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('height', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('location', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
-    t.field('description', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('user', { type: 'UserUpdateOneRequiredWithoutHorsesNestedInput' })
-    t.field('category', {
-      type: 'HorseCategoryUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('gender', {
-      type: 'HorseGenderUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('discipline', {
-      type: 'HorseDisciplineUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('photos', { type: 'HorsePhotoUpdateManyWithoutHorseNestedInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesUpdateManyWithoutHorseNestedInput',
-    })
-  },
-})
-
-export const HorseUncheckedUpdateWithoutXrayResultsInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseUncheckedUpdateWithoutXrayResultsInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('userUid', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('categoryId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('name', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('pedigree', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('age', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('genderId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('height', { type: 'IntFieldUpdateOperationsInput' })
-    t.field('disciplineId', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('location', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
-    t.field('description', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedUpdateManyWithoutHorseNestedInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('favoriteByUsers', {
-      type: 'UserFavoriteHorsesUncheckedUpdateManyWithoutHorseNestedInput',
-    })
-  },
-})
-
 export const UserCreateWithoutHorsesInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -6164,7 +4689,7 @@ export const UserCreateWithoutHorsesInput = inputObjectType({
     t.field('email', { type: 'String' })
     t.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('userFavoriteHorses', {
@@ -6189,7 +4714,7 @@ export const UserUncheckedCreateWithoutHorsesInput = inputObjectType({
     t.field('email', { type: 'String' })
     t.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('userFavoriteHorses', {
@@ -6334,137 +4859,6 @@ export const HorseDisciplineCreateOrConnectWithoutHorsesInput = inputObjectType(
   },
 )
 
-export const HorsePhotoCreateWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoCreateWithoutHorseInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorsePhotoUncheckedCreateWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoUncheckedCreateWithoutHorseInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorsePhotoCreateOrConnectWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoCreateOrConnectWithoutHorseInput',
-  definition(t) {
-    t.nonNull.field('where', { type: 'HorsePhotoWhereUniqueInput' })
-    t.nonNull.field('create', { type: 'HorsePhotoCreateWithoutHorseInput' })
-  },
-})
-
-export const HorsePhotoCreateManyHorseInputEnvelope = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoCreateManyHorseInputEnvelope',
-  definition(t) {
-    t.nonNull.field('data', { type: 'HorsePhotoCreateManyHorseInput' })
-  },
-})
-
-export const HorseVetReportCreateWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportCreateWithoutHorseInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorseVetReportUncheckedCreateWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportUncheckedCreateWithoutHorseInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorseVetReportCreateOrConnectWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportCreateOrConnectWithoutHorseInput',
-  definition(t) {
-    t.nonNull.field('where', { type: 'HorseVetReportWhereUniqueInput' })
-    t.nonNull.field('create', { type: 'HorseVetReportCreateWithoutHorseInput' })
-  },
-})
-
-export const HorseXrayResultsCreateWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsCreateWithoutHorseInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorseXrayResultsUncheckedCreateWithoutHorseInput = inputObjectType(
-  {
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseXrayResultsUncheckedCreateWithoutHorseInput',
-    definition(t) {
-      t.field('id', { type: 'String' })
-      t.nonNull.field('url', { type: 'String' })
-      t.field('public', { type: 'Boolean' })
-      t.field('createdAt', { type: 'DateTime' })
-      t.field('updatedAt', { type: 'DateTime' })
-    },
-  },
-)
-
-export const HorseXrayResultsCreateOrConnectWithoutHorseInput = inputObjectType(
-  {
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseXrayResultsCreateOrConnectWithoutHorseInput',
-    definition(t) {
-      t.nonNull.field('where', { type: 'HorseXrayResultsWhereUniqueInput' })
-      t.nonNull.field('create', {
-        type: 'HorseXrayResultsCreateWithoutHorseInput',
-      })
-    },
-  },
-)
-
 export const UserFavoriteHorsesCreateWithoutHorseInput = inputObjectType({
   nonNullDefaults: {
     input: false,
@@ -6513,6 +4907,7 @@ export const UserFavoriteHorsesCreateManyHorseInputEnvelope = inputObjectType({
   name: 'UserFavoriteHorsesCreateManyHorseInputEnvelope',
   definition(t) {
     t.nonNull.field('data', { type: 'UserFavoriteHorsesCreateManyHorseInput' })
+    t.field('skipDuplicates', { type: 'Boolean' })
   },
 })
 
@@ -6553,7 +4948,7 @@ export const UserUpdateWithoutHorsesInput = inputObjectType({
       type: 'NullableStringFieldUpdateOperationsInput',
     })
     t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('userFavoriteHorses', {
@@ -6580,7 +4975,7 @@ export const UserUncheckedUpdateWithoutHorsesInput = inputObjectType({
       type: 'NullableStringFieldUpdateOperationsInput',
     })
     t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('userFavoriteHorses', {
@@ -6755,173 +5150,6 @@ export const HorseDisciplineUncheckedUpdateWithoutHorsesInput = inputObjectType(
   },
 )
 
-export const HorsePhotoUpsertWithWhereUniqueWithoutHorseInput = inputObjectType(
-  {
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorsePhotoUpsertWithWhereUniqueWithoutHorseInput',
-    definition(t) {
-      t.nonNull.field('where', { type: 'HorsePhotoWhereUniqueInput' })
-      t.nonNull.field('update', { type: 'HorsePhotoUpdateWithoutHorseInput' })
-      t.nonNull.field('create', { type: 'HorsePhotoCreateWithoutHorseInput' })
-    },
-  },
-)
-
-export const HorsePhotoUpdateWithWhereUniqueWithoutHorseInput = inputObjectType(
-  {
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorsePhotoUpdateWithWhereUniqueWithoutHorseInput',
-    definition(t) {
-      t.nonNull.field('where', { type: 'HorsePhotoWhereUniqueInput' })
-      t.nonNull.field('data', { type: 'HorsePhotoUpdateWithoutHorseInput' })
-    },
-  },
-)
-
-export const HorsePhotoUpdateManyWithWhereWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoUpdateManyWithWhereWithoutHorseInput',
-  definition(t) {
-    t.nonNull.field('where', { type: 'HorsePhotoScalarWhereInput' })
-    t.nonNull.field('data', { type: 'HorsePhotoUpdateManyMutationInput' })
-  },
-})
-
-export const HorsePhotoScalarWhereInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoScalarWhereInput',
-  definition(t) {
-    t.list.field('AND', { type: 'HorsePhotoScalarWhereInput' })
-    t.list.field('OR', { type: 'HorsePhotoScalarWhereInput' })
-    t.list.field('NOT', { type: 'HorsePhotoScalarWhereInput' })
-    t.field('id', { type: 'StringFilter' })
-    t.field('url', { type: 'StringFilter' })
-    t.field('createdAt', { type: 'DateTimeFilter' })
-    t.field('updatedAt', { type: 'DateTimeFilter' })
-    t.field('horseId', { type: 'StringFilter' })
-  },
-})
-
-export const HorseVetReportUpsertWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportUpsertWithoutHorseInput',
-  definition(t) {
-    t.nonNull.field('update', { type: 'HorseVetReportUpdateWithoutHorseInput' })
-    t.nonNull.field('create', { type: 'HorseVetReportCreateWithoutHorseInput' })
-    t.field('where', { type: 'HorseVetReportWhereInput' })
-  },
-})
-
-export const HorseVetReportUpdateToOneWithWhereWithoutHorseInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseVetReportUpdateToOneWithWhereWithoutHorseInput',
-    definition(t) {
-      t.field('where', { type: 'HorseVetReportWhereInput' })
-      t.nonNull.field('data', { type: 'HorseVetReportUpdateWithoutHorseInput' })
-    },
-  })
-
-export const HorseVetReportUpdateWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportUpdateWithoutHorseInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorseVetReportUncheckedUpdateWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseVetReportUncheckedUpdateWithoutHorseInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorseXrayResultsUpsertWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsUpsertWithoutHorseInput',
-  definition(t) {
-    t.nonNull.field('update', {
-      type: 'HorseXrayResultsUpdateWithoutHorseInput',
-    })
-    t.nonNull.field('create', {
-      type: 'HorseXrayResultsCreateWithoutHorseInput',
-    })
-    t.field('where', { type: 'HorseXrayResultsWhereInput' })
-  },
-})
-
-export const HorseXrayResultsUpdateToOneWithWhereWithoutHorseInput =
-  inputObjectType({
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseXrayResultsUpdateToOneWithWhereWithoutHorseInput',
-    definition(t) {
-      t.field('where', { type: 'HorseXrayResultsWhereInput' })
-      t.nonNull.field('data', {
-        type: 'HorseXrayResultsUpdateWithoutHorseInput',
-      })
-    },
-  })
-
-export const HorseXrayResultsUpdateWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorseXrayResultsUpdateWithoutHorseInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorseXrayResultsUncheckedUpdateWithoutHorseInput = inputObjectType(
-  {
-    nonNullDefaults: {
-      input: false,
-    },
-    name: 'HorseXrayResultsUncheckedUpdateWithoutHorseInput',
-    definition(t) {
-      t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-      t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-      t.field('public', { type: 'BoolFieldUpdateOperationsInput' })
-      t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-      t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    },
-  },
-)
-
 export const UserFavoriteHorsesUpsertWithWhereUniqueWithoutHorseInput =
   inputObjectType({
     nonNullDefaults: {
@@ -6995,7 +5223,7 @@ export const UserCreateWithoutNotificationsInput = inputObjectType({
     t.field('email', { type: 'String' })
     t.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('userFavoriteHorses', {
@@ -7018,7 +5246,7 @@ export const UserUncheckedCreateWithoutNotificationsInput = inputObjectType({
     t.field('email', { type: 'String' })
     t.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('userFavoriteHorses', {
@@ -7082,7 +5310,7 @@ export const UserUpdateWithoutNotificationsInput = inputObjectType({
       type: 'NullableStringFieldUpdateOperationsInput',
     })
     t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('userFavoriteHorses', {
@@ -7107,7 +5335,7 @@ export const UserUncheckedUpdateWithoutNotificationsInput = inputObjectType({
       type: 'NullableStringFieldUpdateOperationsInput',
     })
     t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('userFavoriteHorses', {
@@ -7134,7 +5362,7 @@ export const UserCreateWithoutUserFavoriteHorsesInput = inputObjectType({
     t.field('email', { type: 'String' })
     t.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('notifications', {
@@ -7158,7 +5386,7 @@ export const UserUncheckedCreateWithoutUserFavoriteHorsesInput =
       t.field('email', { type: 'String' })
       t.field('whatsAppNumber', { type: 'String' })
       t.field('verifiedSeller', { type: 'Boolean' })
-      t.field('role', { type: 'String' })
+      t.field('role', { type: 'UserRole' })
       t.field('createdAt', { type: 'DateTime' })
       t.field('updatedAt', { type: 'DateTime' })
       t.field('notifications', {
@@ -7201,8 +5429,11 @@ export const HorseCreateWithoutFavoriteByUsersInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.nonNull.field('user', { type: 'UserCreateNestedOneWithoutHorsesInput' })
@@ -7214,13 +5445,6 @@ export const HorseCreateWithoutFavoriteByUsersInput = inputObjectType({
     })
     t.nonNull.field('discipline', {
       type: 'HorseDisciplineCreateNestedOneWithoutHorsesInput',
-    })
-    t.field('photos', { type: 'HorsePhotoCreateNestedManyWithoutHorseInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsCreateNestedOneWithoutHorseInput',
     })
   },
 })
@@ -7243,19 +5467,13 @@ export const HorseUncheckedCreateWithoutFavoriteByUsersInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedCreateNestedManyWithoutHorseInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedCreateNestedOneWithoutHorseInput',
-    })
   },
 })
 
@@ -7316,7 +5534,7 @@ export const UserUpdateWithoutUserFavoriteHorsesInput = inputObjectType({
       type: 'NullableStringFieldUpdateOperationsInput',
     })
     t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('notifications', {
@@ -7344,7 +5562,7 @@ export const UserUncheckedUpdateWithoutUserFavoriteHorsesInput =
         type: 'NullableStringFieldUpdateOperationsInput',
       })
       t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-      t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+      t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
       t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
       t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
       t.field('notifications', {
@@ -7403,8 +5621,11 @@ export const HorseUpdateWithoutFavoriteByUsersInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('user', { type: 'UserUpdateOneRequiredWithoutHorsesNestedInput' })
@@ -7416,13 +5637,6 @@ export const HorseUpdateWithoutFavoriteByUsersInput = inputObjectType({
     })
     t.field('discipline', {
       type: 'HorseDisciplineUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('photos', { type: 'HorsePhotoUpdateManyWithoutHorseNestedInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUpdateOneWithoutHorseNestedInput',
     })
   },
 })
@@ -7445,19 +5659,13 @@ export const HorseUncheckedUpdateWithoutFavoriteByUsersInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedUpdateManyWithoutHorseNestedInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedUpdateOneWithoutHorseNestedInput',
-    })
   },
 })
 
@@ -7473,7 +5681,7 @@ export const UserCreateWithoutReviewsInput = inputObjectType({
     t.field('email', { type: 'String' })
     t.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('userFavoriteHorses', {
@@ -7498,7 +5706,7 @@ export const UserUncheckedCreateWithoutReviewsInput = inputObjectType({
     t.field('email', { type: 'String' })
     t.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('userFavoriteHorses', {
@@ -7561,7 +5769,7 @@ export const UserUpdateWithoutReviewsInput = inputObjectType({
       type: 'NullableStringFieldUpdateOperationsInput',
     })
     t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('userFavoriteHorses', {
@@ -7588,7 +5796,7 @@ export const UserUncheckedUpdateWithoutReviewsInput = inputObjectType({
       type: 'NullableStringFieldUpdateOperationsInput',
     })
     t.field('verifiedSeller', { type: 'BoolFieldUpdateOperationsInput' })
-    t.field('role', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('role', { type: 'EnumUserRoleFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('userFavoriteHorses', {
@@ -7651,6 +5859,7 @@ export const UserFavoriteHorsesCreateManyUserInputEnvelope = inputObjectType({
   name: 'UserFavoriteHorsesCreateManyUserInputEnvelope',
   definition(t) {
     t.nonNull.field('data', { type: 'UserFavoriteHorsesCreateManyUserInput' })
+    t.field('skipDuplicates', { type: 'Boolean' })
   },
 })
 
@@ -7702,6 +5911,7 @@ export const NotificationCreateManyUserInputEnvelope = inputObjectType({
   name: 'NotificationCreateManyUserInputEnvelope',
   definition(t) {
     t.nonNull.field('data', { type: 'NotificationCreateManyUserInput' })
+    t.field('skipDuplicates', { type: 'Boolean' })
   },
 })
 
@@ -7719,8 +5929,11 @@ export const HorseCreateWithoutUserInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.nonNull.field('category', {
@@ -7731,13 +5944,6 @@ export const HorseCreateWithoutUserInput = inputObjectType({
     })
     t.nonNull.field('discipline', {
       type: 'HorseDisciplineCreateNestedOneWithoutHorsesInput',
-    })
-    t.field('photos', { type: 'HorsePhotoCreateNestedManyWithoutHorseInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsCreateNestedOneWithoutHorseInput',
     })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesCreateNestedManyWithoutHorseInput',
@@ -7762,19 +5968,13 @@ export const HorseUncheckedCreateWithoutUserInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedCreateNestedManyWithoutHorseInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedCreateNestedOneWithoutHorseInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedCreateNestedOneWithoutHorseInput',
-    })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUncheckedCreateNestedManyWithoutHorseInput',
     })
@@ -7799,6 +5999,7 @@ export const HorseCreateManyUserInputEnvelope = inputObjectType({
   name: 'HorseCreateManyUserInputEnvelope',
   definition(t) {
     t.nonNull.field('data', { type: 'HorseCreateManyUserInput' })
+    t.field('skipDuplicates', { type: 'Boolean' })
   },
 })
 
@@ -7850,6 +6051,7 @@ export const UserReviewCreateManyUserInputEnvelope = inputObjectType({
   name: 'UserReviewCreateManyUserInputEnvelope',
   definition(t) {
     t.nonNull.field('data', { type: 'UserReviewCreateManyUserInput' })
+    t.field('skipDuplicates', { type: 'Boolean' })
   },
 })
 
@@ -8057,8 +6259,11 @@ export const HorseCreateManyCategoryInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
   },
@@ -8078,8 +6283,11 @@ export const HorseUpdateWithoutCategoryInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('user', { type: 'UserUpdateOneRequiredWithoutHorsesNestedInput' })
@@ -8088,13 +6296,6 @@ export const HorseUpdateWithoutCategoryInput = inputObjectType({
     })
     t.field('discipline', {
       type: 'HorseDisciplineUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('photos', { type: 'HorsePhotoUpdateManyWithoutHorseNestedInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUpdateOneWithoutHorseNestedInput',
     })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUpdateManyWithoutHorseNestedInput',
@@ -8119,19 +6320,13 @@ export const HorseUncheckedUpdateWithoutCategoryInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedUpdateManyWithoutHorseNestedInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedUpdateOneWithoutHorseNestedInput',
-    })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUncheckedUpdateManyWithoutHorseNestedInput',
     })
@@ -8155,8 +6350,11 @@ export const HorseUncheckedUpdateManyWithoutCategoryInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
   },
@@ -8179,8 +6377,11 @@ export const HorseCreateManyDisciplineInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
   },
@@ -8200,8 +6401,11 @@ export const HorseUpdateWithoutDisciplineInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('user', { type: 'UserUpdateOneRequiredWithoutHorsesNestedInput' })
@@ -8210,13 +6414,6 @@ export const HorseUpdateWithoutDisciplineInput = inputObjectType({
     })
     t.field('gender', {
       type: 'HorseGenderUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('photos', { type: 'HorsePhotoUpdateManyWithoutHorseNestedInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUpdateOneWithoutHorseNestedInput',
     })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUpdateManyWithoutHorseNestedInput',
@@ -8241,19 +6438,13 @@ export const HorseUncheckedUpdateWithoutDisciplineInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedUpdateManyWithoutHorseNestedInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedUpdateOneWithoutHorseNestedInput',
-    })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUncheckedUpdateManyWithoutHorseNestedInput',
     })
@@ -8277,8 +6468,11 @@ export const HorseUncheckedUpdateManyWithoutDisciplineInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
   },
@@ -8301,8 +6495,11 @@ export const HorseCreateManyGenderInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
   },
@@ -8322,8 +6519,11 @@ export const HorseUpdateWithoutGenderInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('user', { type: 'UserUpdateOneRequiredWithoutHorsesNestedInput' })
@@ -8332,13 +6532,6 @@ export const HorseUpdateWithoutGenderInput = inputObjectType({
     })
     t.field('discipline', {
       type: 'HorseDisciplineUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('photos', { type: 'HorsePhotoUpdateManyWithoutHorseNestedInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUpdateOneWithoutHorseNestedInput',
     })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUpdateManyWithoutHorseNestedInput',
@@ -8363,19 +6556,13 @@ export const HorseUncheckedUpdateWithoutGenderInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedUpdateManyWithoutHorseNestedInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedUpdateOneWithoutHorseNestedInput',
-    })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUncheckedUpdateManyWithoutHorseNestedInput',
     })
@@ -8399,23 +6586,13 @@ export const HorseUncheckedUpdateManyWithoutGenderInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorsePhotoCreateManyHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoCreateManyHorseInput',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.nonNull.field('url', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
   },
 })
 
@@ -8428,45 +6605,6 @@ export const UserFavoriteHorsesCreateManyHorseInput = inputObjectType({
     t.field('id', { type: 'String' })
     t.nonNull.field('userUid', { type: 'String' })
     t.field('createdAt', { type: 'DateTime' })
-  },
-})
-
-export const HorsePhotoUpdateWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoUpdateWithoutHorseInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorsePhotoUncheckedUpdateWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoUncheckedUpdateWithoutHorseInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-  },
-})
-
-export const HorsePhotoUncheckedUpdateManyWithoutHorseInput = inputObjectType({
-  nonNullDefaults: {
-    input: false,
-  },
-  name: 'HorsePhotoUncheckedUpdateManyWithoutHorseInput',
-  definition(t) {
-    t.field('id', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('url', { type: 'StringFieldUpdateOperationsInput' })
-    t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
   },
 })
 
@@ -8554,8 +6692,11 @@ export const HorseCreateManyUserInput = inputObjectType({
     t.nonNull.field('location', { type: 'String' })
     t.nonNull.field('price', { type: 'Float' })
     t.nonNull.field('description', { type: 'String' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.field('vetReport', { type: 'String' })
+    t.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
   },
@@ -8675,8 +6816,11 @@ export const HorseUpdateWithoutUserInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('category', {
@@ -8687,13 +6831,6 @@ export const HorseUpdateWithoutUserInput = inputObjectType({
     })
     t.field('discipline', {
       type: 'HorseDisciplineUpdateOneRequiredWithoutHorsesNestedInput',
-    })
-    t.field('photos', { type: 'HorsePhotoUpdateManyWithoutHorseNestedInput' })
-    t.field('vetReport', {
-      type: 'HorseVetReportUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUpdateOneWithoutHorseNestedInput',
     })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUpdateManyWithoutHorseNestedInput',
@@ -8718,19 +6855,13 @@ export const HorseUncheckedUpdateWithoutUserInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
-    t.field('photos', {
-      type: 'HorsePhotoUncheckedUpdateManyWithoutHorseNestedInput',
-    })
-    t.field('vetReport', {
-      type: 'HorseVetReportUncheckedUpdateOneWithoutHorseNestedInput',
-    })
-    t.field('xrayResults', {
-      type: 'HorseXrayResultsUncheckedUpdateOneWithoutHorseNestedInput',
-    })
     t.field('favoriteByUsers', {
       type: 'UserFavoriteHorsesUncheckedUpdateManyWithoutHorseNestedInput',
     })
@@ -8754,8 +6885,11 @@ export const HorseUncheckedUpdateManyWithoutUserInput = inputObjectType({
     t.field('location', { type: 'StringFieldUpdateOperationsInput' })
     t.field('price', { type: 'FloatFieldUpdateOperationsInput' })
     t.field('description', { type: 'StringFieldUpdateOperationsInput' })
+    t.list.field('photos', { type: 'String' })
     t.field('videoUrl', { type: 'NullableStringFieldUpdateOperationsInput' })
-    t.field('status', { type: 'StringFieldUpdateOperationsInput' })
+    t.field('vetReport', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('xrayResults', { type: 'NullableStringFieldUpdateOperationsInput' })
+    t.field('status', { type: 'EnumHorseStatusFieldUpdateOperationsInput' })
     t.field('createdAt', { type: 'DateTimeFieldUpdateOperationsInput' })
     t.field('updatedAt', { type: 'DateTimeFieldUpdateOperationsInput' })
   },
@@ -8899,103 +7033,6 @@ export const HorseGenderGroupByOutputType = objectType({
   },
 })
 
-export const AggregateHorsePhoto = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'AggregateHorsePhoto',
-  definition(t) {
-    t.nullable.field('_count', { type: 'HorsePhotoCountAggregateOutputType' })
-    t.nullable.field('_min', { type: 'HorsePhotoMinAggregateOutputType' })
-    t.nullable.field('_max', { type: 'HorsePhotoMaxAggregateOutputType' })
-  },
-})
-
-export const HorsePhotoGroupByOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorsePhotoGroupByOutputType',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.field('url', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.field('horseId', { type: 'String' })
-    t.nullable.field('_count', { type: 'HorsePhotoCountAggregateOutputType' })
-    t.nullable.field('_min', { type: 'HorsePhotoMinAggregateOutputType' })
-    t.nullable.field('_max', { type: 'HorsePhotoMaxAggregateOutputType' })
-  },
-})
-
-export const AggregateHorseVetReport = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'AggregateHorseVetReport',
-  definition(t) {
-    t.nullable.field('_count', {
-      type: 'HorseVetReportCountAggregateOutputType',
-    })
-    t.nullable.field('_min', { type: 'HorseVetReportMinAggregateOutputType' })
-    t.nullable.field('_max', { type: 'HorseVetReportMaxAggregateOutputType' })
-  },
-})
-
-export const HorseVetReportGroupByOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorseVetReportGroupByOutputType',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.field('horseId', { type: 'String' })
-    t.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.nullable.field('_count', {
-      type: 'HorseVetReportCountAggregateOutputType',
-    })
-    t.nullable.field('_min', { type: 'HorseVetReportMinAggregateOutputType' })
-    t.nullable.field('_max', { type: 'HorseVetReportMaxAggregateOutputType' })
-  },
-})
-
-export const AggregateHorseXrayResults = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'AggregateHorseXrayResults',
-  definition(t) {
-    t.nullable.field('_count', {
-      type: 'HorseXrayResultsCountAggregateOutputType',
-    })
-    t.nullable.field('_min', { type: 'HorseXrayResultsMinAggregateOutputType' })
-    t.nullable.field('_max', { type: 'HorseXrayResultsMaxAggregateOutputType' })
-  },
-})
-
-export const HorseXrayResultsGroupByOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorseXrayResultsGroupByOutputType',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.field('horseId', { type: 'String' })
-    t.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.nullable.field('_count', {
-      type: 'HorseXrayResultsCountAggregateOutputType',
-    })
-    t.nullable.field('_min', { type: 'HorseXrayResultsMinAggregateOutputType' })
-    t.nullable.field('_max', { type: 'HorseXrayResultsMaxAggregateOutputType' })
-  },
-})
-
 export const AggregateHorse = objectType({
   nonNullDefaults: {
     output: true,
@@ -9028,8 +7065,11 @@ export const HorseGroupByOutputType = objectType({
     t.field('location', { type: 'String' })
     t.field('price', { type: 'Float' })
     t.field('description', { type: 'String' })
+    t.nullable.field('photos', { type: 'String' })
     t.nullable.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.nullable.field('vetReport', { type: 'String' })
+    t.nullable.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.nullable.field('_count', { type: 'HorseCountAggregateOutputType' })
@@ -9170,7 +7210,7 @@ export const UserGroupByOutputType = objectType({
     t.nullable.field('email', { type: 'String' })
     t.nullable.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.nullable.field('_count', { type: 'UserCountAggregateOutputType' })
@@ -9332,148 +7372,12 @@ export const HorseGenderMaxAggregateOutputType = objectType({
   },
 })
 
-export const HorsePhotoCountAggregateOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorsePhotoCountAggregateOutputType',
-  definition(t) {
-    t.field('id', { type: 'Int' })
-    t.field('url', { type: 'Int' })
-    t.field('createdAt', { type: 'Int' })
-    t.field('updatedAt', { type: 'Int' })
-    t.field('horseId', { type: 'Int' })
-    t.field('_all', { type: 'Int' })
-  },
-})
-
-export const HorsePhotoMinAggregateOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorsePhotoMinAggregateOutputType',
-  definition(t) {
-    t.nullable.field('id', { type: 'String' })
-    t.nullable.field('url', { type: 'String' })
-    t.nullable.field('createdAt', { type: 'DateTime' })
-    t.nullable.field('updatedAt', { type: 'DateTime' })
-    t.nullable.field('horseId', { type: 'String' })
-  },
-})
-
-export const HorsePhotoMaxAggregateOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorsePhotoMaxAggregateOutputType',
-  definition(t) {
-    t.nullable.field('id', { type: 'String' })
-    t.nullable.field('url', { type: 'String' })
-    t.nullable.field('createdAt', { type: 'DateTime' })
-    t.nullable.field('updatedAt', { type: 'DateTime' })
-    t.nullable.field('horseId', { type: 'String' })
-  },
-})
-
-export const HorseVetReportCountAggregateOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorseVetReportCountAggregateOutputType',
-  definition(t) {
-    t.field('id', { type: 'Int' })
-    t.field('horseId', { type: 'Int' })
-    t.field('url', { type: 'Int' })
-    t.field('public', { type: 'Int' })
-    t.field('createdAt', { type: 'Int' })
-    t.field('updatedAt', { type: 'Int' })
-    t.field('_all', { type: 'Int' })
-  },
-})
-
-export const HorseVetReportMinAggregateOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorseVetReportMinAggregateOutputType',
-  definition(t) {
-    t.nullable.field('id', { type: 'String' })
-    t.nullable.field('horseId', { type: 'String' })
-    t.nullable.field('url', { type: 'String' })
-    t.nullable.field('public', { type: 'Boolean' })
-    t.nullable.field('createdAt', { type: 'DateTime' })
-    t.nullable.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorseVetReportMaxAggregateOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorseVetReportMaxAggregateOutputType',
-  definition(t) {
-    t.nullable.field('id', { type: 'String' })
-    t.nullable.field('horseId', { type: 'String' })
-    t.nullable.field('url', { type: 'String' })
-    t.nullable.field('public', { type: 'Boolean' })
-    t.nullable.field('createdAt', { type: 'DateTime' })
-    t.nullable.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorseXrayResultsCountAggregateOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorseXrayResultsCountAggregateOutputType',
-  definition(t) {
-    t.field('id', { type: 'Int' })
-    t.field('horseId', { type: 'Int' })
-    t.field('url', { type: 'Int' })
-    t.field('public', { type: 'Int' })
-    t.field('createdAt', { type: 'Int' })
-    t.field('updatedAt', { type: 'Int' })
-    t.field('_all', { type: 'Int' })
-  },
-})
-
-export const HorseXrayResultsMinAggregateOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorseXrayResultsMinAggregateOutputType',
-  definition(t) {
-    t.nullable.field('id', { type: 'String' })
-    t.nullable.field('horseId', { type: 'String' })
-    t.nullable.field('url', { type: 'String' })
-    t.nullable.field('public', { type: 'Boolean' })
-    t.nullable.field('createdAt', { type: 'DateTime' })
-    t.nullable.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
-export const HorseXrayResultsMaxAggregateOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'HorseXrayResultsMaxAggregateOutputType',
-  definition(t) {
-    t.nullable.field('id', { type: 'String' })
-    t.nullable.field('horseId', { type: 'String' })
-    t.nullable.field('url', { type: 'String' })
-    t.nullable.field('public', { type: 'Boolean' })
-    t.nullable.field('createdAt', { type: 'DateTime' })
-    t.nullable.field('updatedAt', { type: 'DateTime' })
-  },
-})
-
 export const HorseCountOutputType = objectType({
   nonNullDefaults: {
     output: true,
   },
   name: 'HorseCountOutputType',
   definition(t) {
-    t.field('photos', { type: 'Int' })
     t.field('favoriteByUsers', { type: 'Int' })
   },
 })
@@ -9496,7 +7400,10 @@ export const HorseCountAggregateOutputType = objectType({
     t.field('location', { type: 'Int' })
     t.field('price', { type: 'Int' })
     t.field('description', { type: 'Int' })
+    t.field('photos', { type: 'Int' })
     t.field('videoUrl', { type: 'Int' })
+    t.field('vetReport', { type: 'Int' })
+    t.field('xrayResults', { type: 'Int' })
     t.field('status', { type: 'Int' })
     t.field('createdAt', { type: 'Int' })
     t.field('updatedAt', { type: 'Int' })
@@ -9547,7 +7454,9 @@ export const HorseMinAggregateOutputType = objectType({
     t.nullable.field('price', { type: 'Float' })
     t.nullable.field('description', { type: 'String' })
     t.nullable.field('videoUrl', { type: 'String' })
-    t.nullable.field('status', { type: 'String' })
+    t.nullable.field('vetReport', { type: 'String' })
+    t.nullable.field('xrayResults', { type: 'String' })
+    t.nullable.field('status', { type: 'HorseStatus' })
     t.nullable.field('createdAt', { type: 'DateTime' })
     t.nullable.field('updatedAt', { type: 'DateTime' })
   },
@@ -9572,7 +7481,9 @@ export const HorseMaxAggregateOutputType = objectType({
     t.nullable.field('price', { type: 'Float' })
     t.nullable.field('description', { type: 'String' })
     t.nullable.field('videoUrl', { type: 'String' })
-    t.nullable.field('status', { type: 'String' })
+    t.nullable.field('vetReport', { type: 'String' })
+    t.nullable.field('xrayResults', { type: 'String' })
+    t.nullable.field('status', { type: 'HorseStatus' })
     t.nullable.field('createdAt', { type: 'DateTime' })
     t.nullable.field('updatedAt', { type: 'DateTime' })
   },
@@ -9780,7 +7691,7 @@ export const UserMinAggregateOutputType = objectType({
     t.nullable.field('email', { type: 'String' })
     t.nullable.field('whatsAppNumber', { type: 'String' })
     t.nullable.field('verifiedSeller', { type: 'Boolean' })
-    t.nullable.field('role', { type: 'String' })
+    t.nullable.field('role', { type: 'UserRole' })
     t.nullable.field('createdAt', { type: 'DateTime' })
     t.nullable.field('updatedAt', { type: 'DateTime' })
   },
@@ -9798,7 +7709,7 @@ export const UserMaxAggregateOutputType = objectType({
     t.nullable.field('email', { type: 'String' })
     t.nullable.field('whatsAppNumber', { type: 'String' })
     t.nullable.field('verifiedSeller', { type: 'Boolean' })
-    t.nullable.field('role', { type: 'String' })
+    t.nullable.field('role', { type: 'UserRole' })
     t.nullable.field('createdAt', { type: 'DateTime' })
     t.nullable.field('updatedAt', { type: 'DateTime' })
   },
@@ -9884,100 +7795,6 @@ export const UpdateManyHorseGenderAndReturnOutputType = objectType({
   },
 })
 
-export const CreateManyHorsePhotoAndReturnOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'CreateManyHorsePhotoAndReturnOutputType',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.field('url', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.field('horseId', { type: 'String' })
-    t.field('horse', { type: 'Horse' })
-  },
-})
-
-export const UpdateManyHorsePhotoAndReturnOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'UpdateManyHorsePhotoAndReturnOutputType',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.field('url', { type: 'String' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.field('horseId', { type: 'String' })
-    t.field('horse', { type: 'Horse' })
-  },
-})
-
-export const CreateManyHorseVetReportAndReturnOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'CreateManyHorseVetReportAndReturnOutputType',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.field('horseId', { type: 'String' })
-    t.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.field('horse', { type: 'Horse' })
-  },
-})
-
-export const UpdateManyHorseVetReportAndReturnOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'UpdateManyHorseVetReportAndReturnOutputType',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.field('horseId', { type: 'String' })
-    t.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.field('horse', { type: 'Horse' })
-  },
-})
-
-export const CreateManyHorseXrayResultsAndReturnOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'CreateManyHorseXrayResultsAndReturnOutputType',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.field('horseId', { type: 'String' })
-    t.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.field('horse', { type: 'Horse' })
-  },
-})
-
-export const UpdateManyHorseXrayResultsAndReturnOutputType = objectType({
-  nonNullDefaults: {
-    output: true,
-  },
-  name: 'UpdateManyHorseXrayResultsAndReturnOutputType',
-  definition(t) {
-    t.field('id', { type: 'String' })
-    t.field('horseId', { type: 'String' })
-    t.field('url', { type: 'String' })
-    t.field('public', { type: 'Boolean' })
-    t.field('createdAt', { type: 'DateTime' })
-    t.field('updatedAt', { type: 'DateTime' })
-    t.field('horse', { type: 'Horse' })
-  },
-})
-
 export const CreateManyHorseAndReturnOutputType = objectType({
   nonNullDefaults: {
     output: true,
@@ -9996,8 +7813,11 @@ export const CreateManyHorseAndReturnOutputType = objectType({
     t.field('location', { type: 'String' })
     t.field('price', { type: 'Float' })
     t.field('description', { type: 'String' })
+    t.nullable.field('photos', { type: 'String' })
     t.nullable.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.nullable.field('vetReport', { type: 'String' })
+    t.nullable.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('user', { type: 'User' })
@@ -10025,8 +7845,11 @@ export const UpdateManyHorseAndReturnOutputType = objectType({
     t.field('location', { type: 'String' })
     t.field('price', { type: 'Float' })
     t.field('description', { type: 'String' })
+    t.nullable.field('photos', { type: 'String' })
     t.nullable.field('videoUrl', { type: 'String' })
-    t.field('status', { type: 'String' })
+    t.nullable.field('vetReport', { type: 'String' })
+    t.nullable.field('xrayResults', { type: 'String' })
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('user', { type: 'User' })
@@ -10146,7 +7969,7 @@ export const CreateManyUserAndReturnOutputType = objectType({
     t.nullable.field('email', { type: 'String' })
     t.nullable.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
   },
@@ -10164,7 +7987,7 @@ export const UpdateManyUserAndReturnOutputType = objectType({
     t.nullable.field('email', { type: 'String' })
     t.nullable.field('whatsAppNumber', { type: 'String' })
     t.field('verifiedSeller', { type: 'Boolean' })
-    t.field('role', { type: 'String' })
+    t.field('role', { type: 'UserRole' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
   },

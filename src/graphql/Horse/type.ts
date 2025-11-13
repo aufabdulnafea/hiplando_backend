@@ -19,8 +19,11 @@ export const Horse = objectType({
     t.string('location')
     t.float('price')
     t.string('description')
+    t.list.string('photos')
     t.nullable.string('videoUrl')
-    t.string('status')
+    t.nullable.string('vetReport')
+    t.nullable.string('xrayResults')
+    t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.field('user', {
@@ -45,38 +48,6 @@ export const Horse = objectType({
       type: 'HorseDiscipline',
       resolve(root: any) {
         return root.discipline
-      },
-    })
-    t.list.field('photos', {
-      type: 'HorsePhoto',
-      args: {
-        where: 'HorsePhotoWhereInput',
-        orderBy: list('HorsePhotoOrderByWithRelationInput'),
-        cursor: 'HorsePhotoWhereUniqueInput',
-        take: 'Int',
-        skip: 'Int',
-        distinct: list('HorsePhotoScalarFieldEnum'),
-      },
-      resolve(root: any) {
-        return root.photos
-      },
-    })
-    t.nullable.field('vetReport', {
-      type: 'HorseVetReport',
-      args: {
-        where: 'HorseVetReportWhereInput',
-      },
-      resolve(root: any) {
-        return root.vetReport
-      },
-    })
-    t.nullable.field('xrayResults', {
-      type: 'HorseXrayResults',
-      args: {
-        where: 'HorseXrayResultsWhereInput',
-      },
-      resolve(root: any) {
-        return root.xrayResults
       },
     })
     t.list.field('favoriteByUsers', {

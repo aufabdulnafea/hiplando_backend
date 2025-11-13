@@ -9,14 +9,14 @@ export function requireAuth(ctx: Context) {
 
 export function requireAdmin(ctx: Context) {
     requireAuth(ctx);
-    if (ctx.user?.role !== "admin") {
+    if (ctx.user?.role !== "ADMIN") {
         throw new GraphQLError("Not authorized (admin only)", { extensions: { code: "FORBIDDEN" } });
     }
 }
 
 export function assertOwnerOrAdmin(ctx: Context, uid: string) {
     requireAuth(ctx);
-    if (ctx.user?.role === "admin") return;
+    if (ctx.user?.role === "ADMIN") return;
     if (ctx.user?.uid !== uid) {
         throw new GraphQLError("Not authorized (not owner)", { extensions: { code: "FORBIDDEN" } });
     }

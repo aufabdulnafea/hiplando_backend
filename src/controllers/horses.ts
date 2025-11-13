@@ -18,7 +18,6 @@ export const horseBodySchema = z.object({
     videoUrl: z.url("Invalid video URL").optional().or(z.literal("")),
 });
 
-// ✅ validates uploaded files via Multer
 export const horseFilesSchema = z.object({
     photos: z
         .array(z.any())
@@ -50,77 +49,59 @@ export const horseFilesSchema = z.object({
         ),
 });
 
-export async function createHorse(req: Request, res: Response, next: NextFunction) {
-    try {
-        // ➤ Convert numeric body values first (Zod receives strings via multipart/form-data)
-        const mreq = req as MulterRequest;
-        const parsedBody = horseBodySchema.safeParse({
-            ...mreq.body,
-            age: Number(mreq.body.age),
-            height: Number(mreq.body.height),
-            price: Number(mreq.body.price),
-        });
+export async function createHorse(req: Request, res: Response) {
+    const mreq = req as MulterRequest;
+    const parsedBody = horseBodySchema.safeParse({
+        ...mreq.body,
+        age: Number(mreq.body.age),
+        height: Number(mreq.body.height),
+        price: Number(mreq.body.price),
+    });
 
-        if (!parsedBody.success) {
-            return res.status(400).json({ errors: parsedBody.error.format() });
-        }
-
-        // ➤ Files validation
-        const parsedFiles = horseFilesSchema.safeParse({
-            photos: mreq.files?.photos || [],
-            vetReport: mreq.files?.vetReport?.[0],
-            xrayResults: mreq.files?.xrayResults?.[0],
-        });
-
-        if (!parsedFiles.success) {
-            return res.status(400).json({ errors: parsedFiles.error.format() });
-        }
-
-        // ✅ At this point: everything is validated
-        const horseData = parsedBody.data;
-        const fileData = parsedFiles.data;
-
-        // save files to the database
-
-        const horse = await prisma.horse.create({
-            data: {
-                userUid: req.user?.uid as string,
-                ...horseData,
-                photos: fileData.photos.map(el => `http://192.168.0.217:4000/${el.filename}`),
-                vetReport: fileData.vetReport ? `http://192.168.0.217/${fileData.vetReport.filename}` : null,
-                xrayResults: fileData.xrayResults ? `http://192.168.0.217/${fileData.xrayResults.filename}` : null
-            }
-        })
-
-        // for (const photo of fileData.photos) {
-        //     await prisma.horsePhoto.create({
-        //         data: {
-        //             horseId: horse.id,
-        //             url: `http://localhost:4000/${photo.filename}`
-        //         }
-        //     })
-        // }
-
-        // if (fileData.vetReport) {
-        //     await prisma.horseVetReport.create({
-        //         data: {
-        //             horseId: horse.id,
-        //             url: `http://localhost:4000/${fileData.vetReport.filename}`
-        //         }
-        //     })
-        // }
-
-        // if (fileData.xrayResults) {
-        //     await prisma.horseXrayResults.create({
-        //         data: {
-        //             horseId: horse.id,
-        //             url: `http://localhost:4000/${fileData.vetReport.filename}`
-        //         }
-        //     })
-        // }
-        // TODO: save to DB, upload to cloud storage, etc.
-        return res.status(201).json(horse);
-    } catch (err) {
-        next(err);
+    if (!parsedBody.success) {
+        return res.status(400).json({ errors: parsedBody.error.format() });
     }
+
+    const parsedFiles = horseFilesSchema.safeParse({
+        photos: mreq.files?.photos || [],
+        vetReport: mreq.files?.vetReport?.[0],
+        xrayResults: mreq.files?.xrayResults?.[0],
+    });
+
+    if (!parsedFiles.success) {
+        return res.status(400).json({ errors: parsedFiles.error.format() });
+    }
+
+    const horseData = parsedBody.data;
+    const fileData = parsedFiles.data;
+
+    const horse = await prisma.horse.create({
+        data: {
+            userUid: req.user?.uid as string,
+            ...horseData,
+            description: horseData.description ?? "",
+            photos: fileData.photos.map(el => `http://192.168.0.217:4000/${el.filename}`),
+            vetReport: fileData.vetReport ? `http://192.168.0.217/${fileData.vetReport.filename}` : null,
+            xrayResults: fileData.xrayResults ? `http://192.168.0.217/${fileData.xrayResults.filename}` : null
+        }
+    })
+    return res.status(201).json(horse);
+}
+
+export async function getHorseGenders(req: Request, res: Response) {
+    console.log("getHorseGenders")
+    const genders = await prisma.horseGender.findMany()
+    return res.status(200).json(genders)
+}
+
+export async function getHorseCategories(req: Request, res: Response) {
+    console.log("getHorseCategories")
+    const categories = await prisma.horseCategory.findMany()
+    return res.status(200).json(categories)
+}
+
+export async function getHorseDisciplines(req: Request, res: Response) {
+    console.log("getHorseDisciplines")
+    const disciplines = await prisma.horseDiscipline.findMany()
+    return res.status(200).json(disciplines)
 }

@@ -1,8 +1,6 @@
-// env.ts
 import { z } from "zod";
 import dotenv from "dotenv";
 
-// Load .env file into process.env
 dotenv.config();
 
 const envSchema = z.object({
@@ -22,6 +20,8 @@ const envSchema = z.object({
                 throw new Error("FIREBASE_SERVICE_ACCOUNT_BASE64 must be valid Base64 JSON");
             }
         }),
+    NEXTJS_PUBLIC_URL: z.string(),
+    NEXTJS_REVALIDATE_SECRET: z.string(),
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -31,5 +31,4 @@ if (!parsed.success) {
     process.exit(1);
 }
 
-// Export validated env object
 export const env = parsed.data;

@@ -24,7 +24,13 @@ async function main() {
     {
       output: './src/graphql/',
       excludeFields: ['password'],
-      disableMutations: true
+      disableMutations: true,
+      excludeModels: [
+        { name: "HorseDiscipline", queries: true },
+        { name: "HorseGender", queries: true },
+        { name: "HorseCategory", queries: true },
+      ]
+      // models: ["Horse", "User", "Notification", "UserFavoriteHorses", "UserReview"]
     }
   );
 

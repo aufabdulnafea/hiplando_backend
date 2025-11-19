@@ -18,7 +18,7 @@ async function main() {
   app.use(cors({
     origin: ["http://localhost:3000", "http://192.168.0.39:3000"],
     credentials: true,
-    methods: ["GET", "POST", "OPTIONS"],
+    methods: ["GET", "POST", "OPTIONS", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     preflightContinue: false,
     optionsSuccessStatus: 204

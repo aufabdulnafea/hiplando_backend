@@ -9,7 +9,7 @@ export const HorseCategory = objectType({
   definition(t) {
     t.string('id')
     t.string('name')
-    t.string('imageUrl')
+    t.string('imageURL')
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
     t.list.field('horses', {

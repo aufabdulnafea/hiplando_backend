@@ -4,8 +4,6 @@ import path from 'path';
 
 async function main() {
   let generatedSchemaContent = ""
-  // const mainSchemaPath = './prisma/schema.prisma'
-  // generatedSchemaContent += await fs.readFile(mainSchemaPath, 'utf-8')
   const schemasDir = './prisma/schema'
   const schemas = (await fs.readdir(schemasDir)).filter(file => path.extname(file).toLowerCase() === ".prisma")
   for (const schema of schemas) {
@@ -30,7 +28,6 @@ async function main() {
         { name: "HorseGender", queries: true },
         { name: "HorseCategory", queries: true },
       ]
-      // models: ["Horse", "User", "Notification", "UserFavoriteHorses", "UserReview"]
     }
   );
 

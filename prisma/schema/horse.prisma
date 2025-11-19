@@ -17,9 +17,9 @@ model Horse {
     categoryId String
     category   HorseCategory @relation(fields: [categoryId], references: [id])
 
-    name     String
-    pedigree String?
-    age      Int
+    name        String
+    pedigreeURL String?
+    yearOfBirth Int
 
     genderId String
     gender   HorseGender @relation(fields: [genderId], references: [id])
@@ -36,7 +36,7 @@ model Horse {
     description String
 
     photos   String[]
-    videoUrl String?
+    videoURL String?
 
     vetReport   String?
     xrayResults String?
@@ -46,6 +46,8 @@ model Horse {
     createdAt       DateTime             @default(now())
     updatedAt       DateTime             @updatedAt
     favoriteByUsers UserFavoriteHorses[]
+
+    pedigree Json?
 
     @@index([status])
     @@index([categoryId])

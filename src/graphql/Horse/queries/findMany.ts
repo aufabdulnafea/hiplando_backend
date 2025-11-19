@@ -1,4 +1,5 @@
 import { queryField, nonNull, list } from 'nexus'
+import { Context } from '../../../context'
 
 export const HorseFindManyQuery = queryField('findManyHorse', {
   type: nonNull(list(nonNull('Horse'))),
@@ -10,10 +11,18 @@ export const HorseFindManyQuery = queryField('findManyHorse', {
     skip: 'Int',
     distinct: list('HorseScalarFieldEnum'),
   },
-  resolve(_parent, args, { prisma, select }) {
-    return prisma.horse.findMany({
+  resolve: async (_parent, args, context: Context & { select: any }) => {
+    const horses = await context.prisma.horse.findMany({
       ...args,
-      ...select,
+      // ...context.select,
+      select: {
+        ...(context.select?.select ?? {}),
+        user: true,
+      },
     })
+    console.log(horses)
+    return horses
+    // return horses.filter((horse) => horse.status === 'ACCEPTED')
+    // return horses.filter((horse: any) => horse.user.uid === context.user?.uid)
   },
 })

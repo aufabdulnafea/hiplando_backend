@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { processImages, upload } from '../../../controllers/upload'
-import { createHorse, getHorseCategories, getHorseDisciplines, getHorseGenders } from '../../../controllers/horses'
+import { addToFavorites, createHorse, removeFromFavorites } from '../../../controllers/horses'
 
 const router: Router = Router()
 
@@ -14,7 +14,7 @@ router.post('/create',
     createHorse
 )
 
-router.post('/add-favorite', () => { })
-router.post('/remove-favorite', () => { })
+router.get('/favorite/:horseId', addToFavorites)
+router.delete('/favorite/:horseId', removeFromFavorites)
 
 export default router

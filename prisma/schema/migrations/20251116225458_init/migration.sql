@@ -42,7 +42,7 @@ CREATE TABLE "Horse" (
     "categoryId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "pedigree" TEXT,
-    "age" INTEGER NOT NULL,
+    "yearOfBirth" INTEGER NOT NULL,
     "genderId" TEXT NOT NULL,
     "height" INTEGER NOT NULL,
     "disciplineId" TEXT NOT NULL,

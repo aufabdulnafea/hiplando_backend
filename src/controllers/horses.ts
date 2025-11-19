@@ -8,7 +8,7 @@ export const horseBodySchema = z.object({
     categoryId: z.uuidv4(),
     name: z.string().min(3, "Name must be at least 3 characters").max(40, "Name too long"),
     pedigree: z.url("Invalid video URL").optional().or(z.literal("")),
-    age: z.number().int("Age must be an integer").positive("Age must be positive"),
+    yearOfBirth: z.number().int("Year of birth must be an integer").positive("Year of birth must be positive"),
     genderId: z.uuidv4(),
     height: z.number().positive("Height must be positive"),
     disciplineId: z.uuidv4(),
@@ -53,7 +53,7 @@ export async function createHorse(req: Request, res: Response) {
     const mreq = req as MulterRequest;
     const parsedBody = horseBodySchema.safeParse({
         ...mreq.body,
-        age: Number(mreq.body.age),
+        yearOfBirth: Number(mreq.body.yearOfBirth),
         height: Number(mreq.body.height),
         price: Number(mreq.body.price),
     });
@@ -89,19 +89,45 @@ export async function createHorse(req: Request, res: Response) {
 }
 
 export async function getHorseGenders(req: Request, res: Response) {
-    console.log("getHorseGenders")
     const genders = await prisma.horseGender.findMany()
     return res.status(200).json(genders)
 }
 
 export async function getHorseCategories(req: Request, res: Response) {
-    console.log("getHorseCategories")
     const categories = await prisma.horseCategory.findMany()
     return res.status(200).json(categories)
 }
 
 export async function getHorseDisciplines(req: Request, res: Response) {
-    console.log("getHorseDisciplines")
     const disciplines = await prisma.horseDiscipline.findMany()
     return res.status(200).json(disciplines)
+}
+
+
+export async function addToFavorites(req: Request, res: Response) {
+    const { horseId } = req.params
+    const userUid = req.user?.uid as string
+
+    const favorite = await prisma.userFavoriteHorses.create({
+        data: {
+            horseId: horseId,
+            userUid: userUid,
+        }
+    })
+    return res.status(201).json(favorite)
+}
+
+export async function removeFromFavorites(req: Request, res: Response) {
+    const { horseId } = req.params
+    const userUid = req.user?.uid as string
+
+    const favorite = await prisma.userFavoriteHorses.delete({
+        where: {
+            userUid_horseId: {
+                horseId: horseId,
+                userUid: userUid,
+            },
+        }
+    })
+    return res.status(201).json(favorite)
 }

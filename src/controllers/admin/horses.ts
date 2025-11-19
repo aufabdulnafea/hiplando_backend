@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 import { prisma } from '../../context';
+import { revalidateNextTag } from '../../lib/next-revalidate';
 
 // ==========================
 // 🔧 Helpers & Schemas
@@ -36,6 +37,8 @@ export async function postHorseCategory(req: Request, res: Response) {
         },
     });
 
+    await revalidateNextTag("categories")
+
     return res.status(201).json(category);
 }
 
@@ -45,6 +48,8 @@ export async function deleteHorseCategory(req: Request, res: Response) {
     const category = await prisma.horseCategory.delete({
         where: { id },
     });
+
+    await revalidateNextTag("categories")
 
     return res.json(category);
 }
@@ -67,6 +72,8 @@ export async function patchHorseCategory(req: Request, res: Response) {
         data: updateData,
     });
 
+    await revalidateNextTag("categories")
+
     return res.json(category);
 }
 
@@ -81,6 +88,8 @@ export async function postHorseGender(req: Request, res: Response) {
         data: { name: parseName(name) },
     });
 
+    await revalidateNextTag("genders")
+
     return res.status(201).json(gender);
 }
 
@@ -90,6 +99,8 @@ export async function deleteHorseGender(req: Request, res: Response) {
     const gender = await prisma.horseGender.delete({
         where: { id },
     });
+
+    await revalidateNextTag("genders")
 
     return res.json(gender);
 }
@@ -102,6 +113,8 @@ export async function patchHorseGender(req: Request, res: Response) {
         where: { id },
         data: { name: parseName(name) },
     });
+
+    await revalidateNextTag("genders")
 
     return res.json(gender);
 }
@@ -117,6 +130,8 @@ export async function postHorseDiscipline(req: Request, res: Response) {
         data: { name: parseName(name) },
     });
 
+    await revalidateNextTag("disciplines")
+
     return res.status(201).json(discipline);
 }
 
@@ -126,6 +141,8 @@ export async function deleteHorseDiscipline(req: Request, res: Response) {
     const discipline = await prisma.horseDiscipline.delete({
         where: { id },
     });
+
+    await revalidateNextTag("disciplines")
 
     return res.json(discipline);
 }
@@ -138,6 +155,8 @@ export async function patchHorseDiscipline(req: Request, res: Response) {
         where: { id },
         data: { name: parseName(name) },
     });
+
+    await revalidateNextTag("disciplines")
 
     return res.json(discipline);
 }

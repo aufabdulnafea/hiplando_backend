@@ -1,5 +1,6 @@
 import { objectType, list } from 'nexus'
 
+
 export const Horse = objectType({
   nonNullDefaults: {
     output: true,
@@ -11,8 +12,8 @@ export const Horse = objectType({
     t.string('userUid')
     t.string('categoryId')
     t.string('name')
-    t.nullable.string('pedigree')
-    t.int('age')
+    t.nullable.string('pedigreeURL')
+    t.int('yearOfBirth')
     t.string('genderId')
     t.int('height')
     t.string('disciplineId')
@@ -20,12 +21,13 @@ export const Horse = objectType({
     t.float('price')
     t.string('description')
     t.list.string('photos')
-    t.nullable.string('videoUrl')
+    t.nullable.string('videoURL')
     t.nullable.string('vetReport')
     t.nullable.string('xrayResults')
     t.field('status', { type: 'HorseStatus' })
     t.field('createdAt', { type: 'DateTime' })
     t.field('updatedAt', { type: 'DateTime' })
+    t.nullable.field('pedigree', { type: 'Json' })
     t.field('user', {
       type: 'User',
       resolve(root: any) {
